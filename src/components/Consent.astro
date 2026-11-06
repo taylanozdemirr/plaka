@@ -1,0 +1,208 @@
+---
+import { tracking } from '../data/site';
+
+const googleAdsId = tracking.googleAdsId.trim();
+const ga4Id = tracking.ga4Id.trim();
+const labels = tracking.conversionLabels;
+const enabled = Boolean(googleAdsId || ga4Id);
+---
+
+{enabled && (
+	<div class="consent" data-consent-banner hidden role="dialog" aria-live="polite" aria-label="Çerez tercihleri">
+		<div class="consent__copy">
+			<strong>Çerez tercihleriniz</strong>
+			<p>
+				Reklamlarımızın etkisini ölçmek için Google çerezlerini yalnızca onayınızla kullanıyoruz.
+				Reddetmeniz siteyi kullanmanızı etkilemez.
+				<a href="/bilgi/gizlilik-politikasi">Gizlilik politikası</a>
+			</p>
+		</div>
+		<div class="consent__actions">
+			<button class="btn btn--outline btn--sm" type="button" data-consent-reject>Reddet</button>
+			<button class="btn btn--gold btn--sm" type="button" data-consent-accept>Kabul et</button>
+		</div>
+	</div>
+)}
+
+{enabled && (
+	<script is:inline define:vars={{ googleAdsId, ga4Id, labels }}>
+		(function () {
+			var KEY = 'plaka:consent';
+			var ids = [googleAdsId, ga4Id].filter(Boolean);
+			var banner = document.querySelector('[data-consent-banner]');
+			var loaded = false;
+
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				window.dataLayer.push(arguments);
+			}
+			window.gtag = gtag;
+
+			// KVKK: onay verilene kadar hiçbir Google çerezi yazılmaz, etiket yüklenmez.
+			gtag('consent', 'default', {
+				ad_storage: 'denied',
+				analytics_storage: 'denied',
+				ad_user_data: 'denied',
+				ad_personalization: 'denied',
+			});
+
+			function read() {
+				try {
+					return localStorage.getItem(KEY);
+				} catch (e) {
+					return null;
+				}
+			}
+
+			function write(value) {
+				try {
+					localStorage.setItem(KEY, value);
+				} catch (e) {
+					/* gizli pencerede depolama kapalı olabilir */
+				}
+			}
+
+			function load() {
+				if (loaded) return;
+				loaded = true;
+				gtag('consent', 'update', {
+					ad_storage: 'granted',
+					analytics_storage: 'granted',
+					ad_user_data: 'granted',
+					ad_personalization: 'granted',
+				});
+				var script = document.createElement('script');
+				script.async = true;
+				script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ids[0]);
+				document.head.appendChild(script);
+				gtag('js', new Date());
+				ids.forEach(function (id) {
+					gtag('config', id);
+				});
+			}
+
+			function show() {
+				if (!banner) return;
+				banner.hidden = false;
+				requestAnimationFrame(function () {
+					banner.classList.add('is-in');
+				});
+			}
+
+			function hide() {
+				if (!banner) return;
+				banner.classList.remove('is-in');
+				setTimeout(function () {
+					banner.hidden = true;
+				}, 350);
+			}
+
+			var choice = read();
+			if (choice === 'granted') load();
+			else if (choice !== 'denied') show();
+
+			document.addEventListener('click', function (event) {
+				var target = event.target;
+				if (!(target instanceof Element)) return;
+
+				if (target.closest('[data-consent-accept]')) {
+					write('granted');
+					load();
+					hide();
+					return;
+				}
+				if (target.closest('[data-consent-reject]')) {
+					var wasLoaded = loaded;
+					write('denied');
+					hide();
+					if (wasLoaded) {
+						gtag('consent', 'update', {
+							ad_storage: 'denied',
+							analytics_storage: 'denied',
+							ad_user_data: 'denied',
+							ad_personalization: 'denied',
+						});
+						location.reload();
+					}
+					return;
+				}
+				if (target.closest('[data-consent-settings]')) {
+					event.preventDefault();
+					show();
+					return;
+				}
+
+				// Dönüşüm takibi: telefon ve WhatsApp tıklamaları
+				if (!loaded) return;
+				var link = target.closest('a[href^="tel:"], a[href*="wa.me/"], [data-config-order]');
+				if (!link) return;
+				var kind = link.matches('a[href^="tel:"]') ? 'phone' : 'whatsapp';
+				var label = labels && labels[kind];
+				if (googleAdsId && label) {
+					gtag('event', 'conversion', { send_to: googleAdsId + '/' + label });
+				}
+				gtag('event', kind === 'phone' ? 'phone_click' : 'whatsapp_click', {
+					page_path: location.pathname,
+				});
+			}, true);
+		})();
+	</script>
+)}
+
+<style>
+	.consent {
+		position: fixed;
+		left: clamp(12px, 2.4vw, 28px);
+		bottom: calc(clamp(12px, 2.4vw, 28px) + env(safe-area-inset-bottom));
+		z-index: 120;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		width: min(420px, calc(100vw - 24px));
+		padding: 18px 20px;
+		border: 1px solid rgba(201, 168, 106, 0.28);
+		border-radius: 16px;
+		background: rgba(10, 11, 14, 0.94);
+		backdrop-filter: blur(18px);
+		-webkit-backdrop-filter: blur(18px);
+		box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.9);
+		opacity: 0;
+		transform: translateY(14px);
+		transition:
+			opacity 0.35s var(--ease-soft),
+			transform 0.45s var(--ease);
+	}
+
+	.consent.is-in {
+		opacity: 1;
+		transform: none;
+	}
+
+	.consent__copy strong {
+		font-size: 13px;
+		font-weight: 650;
+	}
+
+	.consent__copy p {
+		margin-top: 6px;
+		font-size: 11.5px;
+		line-height: 1.65;
+		color: var(--text-muted);
+	}
+
+	.consent__copy a {
+		color: var(--gold-bright);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	.consent__actions {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 8px;
+	}
+
+	.consent__actions .btn {
+		justify-content: center;
+	}
+</style>

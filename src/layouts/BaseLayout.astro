@@ -1,0 +1,105 @@
+---
+import '@fontsource-variable/sora';
+import '@fontsource-variable/manrope';
+import '@fontsource/instrument-serif/400-italic.css';
+import '../styles/global.css';
+import '../styles/components.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FloatingCall from '../components/FloatingCall.astro';
+import Consent from '../components/Consent.astro';
+import { site } from '../data/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	noHeader?: boolean;
+	noFooter?: boolean;
+	bodyClass?: string;
+}
+
+const {
+	title,
+	description = site.description,
+	image = '/og-image.png',
+	noHeader = false,
+	noFooter = false,
+	bodyClass = '',
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — Premium Plaka Atölyesi`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+---
+
+<!doctype html>
+<html lang="tr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{pageTitle}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<meta name="theme-color" content="#07080a" />
+		<meta name="color-scheme" content="dark" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="tr_TR" />
+		<meta property="og:site_name" content={site.name} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={new URL(image, site.url).href} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Plaka Atelier — Aracınıza bir imza." />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={new URL(image, site.url).href} />
+
+		<script is:inline>
+			document.documentElement.classList.add('js');
+		</script>
+	</head>
+	<body class={bodyClass}>
+		<div class="scroll-progress" aria-hidden="true"><span data-progress></span></div>
+		{!noHeader && <Header />}
+		<main class="page-enter" id="main">
+			<slot />
+		</main>
+		{!noFooter && <Footer />}
+		<FloatingCall />
+		<Consent />
+
+		<script>
+			import { initGlobalUi } from '../lib/ui';
+
+			initGlobalUi();
+
+			const bar = document.querySelector<HTMLElement>('[data-progress]');
+			let ticking = false;
+
+			const updateProgress = () => {
+				const max = document.documentElement.scrollHeight - window.innerHeight;
+				const value = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+				if (bar) bar.style.width = `${value * 100}%`;
+				ticking = false;
+			};
+
+			const onScroll = () => {
+				if (ticking) return;
+				ticking = true;
+				requestAnimationFrame(updateProgress);
+			};
+
+			window.addEventListener('scroll', onScroll, { passive: true });
+			window.addEventListener('resize', onScroll);
+			updateProgress();
+		</script>
+	</body>
+</html>

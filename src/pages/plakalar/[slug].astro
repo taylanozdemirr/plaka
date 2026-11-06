@@ -1,0 +1,682 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Plate from '../../components/Plate.astro';
+import Icon from '../../components/Icon.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import {
+	getProduct,
+	getRelatedProducts,
+	categoryLabels,
+	products,
+} from '../../data/products';
+import PhoneCta from '../../components/PhoneCta.astro';
+import { formatPrice } from '../../lib/format';
+import { telHref } from '../../data/site';
+
+export function getStaticPaths() {
+	return products.map((product) => ({
+		params: { slug: product.slug },
+		props: { product },
+	}));
+}
+
+const { product } = Astro.props;
+const related = getRelatedProducts(product, 3);
+const orderMessage = `Merhaba, "${product.name}" (${product.city} ${product.text} · ${product.finish}) plaka hakkında bilgi almak ve sipariş vermek istiyorum.`;
+
+const specs = [
+	{ label: 'Yüzey', value: product.finish },
+	{ label: 'Ölçü', value: product.size === 'kare' ? '340 × 230 mm' : product.size === 'uzun' ? '600 × 108 mm' : product.size === 'motosiklet' ? '260 × 210 mm' : '520 × 110 mm' },
+	{ label: 'Gövde', value: '1.2 mm fırçalanmış alüminyum' },
+	{ label: 'Karakter', value: '3D kabartma · UV dayanımlı' },
+	{ label: 'Montaj', value: 'Gizli kanal + paslanmaz set' },
+	{ label: 'Garanti', value: '2 yıl üretim garantisi' },
+];
+
+const accordion = [
+	{
+		title: 'Kargo ve teslimat',
+		body: 'Siparişiniz telefonda netleştikten sonra üretime alınır ve Türkiye’nin 81 iline sigortalı kargo ile gönderilir. Stoktaki ürünler 48 saat içinde yola çıkar; teslimat 1–3 iş günüdür.',
+	},
+	{
+		title: 'Montaj',
+		body: 'Kutu içinde paslanmaz vida seti, montaj şablonu ve adım adım kılavuz bulunur. Gizli montaj kanalı sayesinde aracınıza ekstra delik açmanız gerekmez.',
+	},
+	{
+		title: 'İade ve değişim',
+		body: 'Standart ürünlerde 14 gün içinde iade veya değişim yapılabilir. Kişiye özel üretimler ve numaralı koleksiyon serileri bu kapsam dışındadır.',
+	},
+	{
+		title: 'Yasal uyarı',
+		body: 'Atölyemizde üretilen plakalar dekoratif ve koleksiyon amaçlıdır. Araç tescil işlemleri için yalnızca yetkili kurumların düzenlediği resmî plakalar kullanılabilir.',
+	},
+];
+---
+
+<BaseLayout
+	title={product.name}
+	description={`${product.name} — ${product.tagline} ${product.finish} yüzey, 3D kabartma karakterler ve 2 yıl üretim garantisi.`}
+>
+	<div class="product-page">
+		<div class="container">
+			<nav class="breadcrumb product-crumbs" aria-label="Sayfa yolu">
+				<a href="/">Ana Sayfa</a>
+				<span class="breadcrumb__sep" aria-hidden="true">/</span>
+				<a href="/plakalar">Plakalar</a>
+				<span class="breadcrumb__sep" aria-hidden="true">/</span>
+				<a href={`/plakalar?kategori=${product.category}`}>{categoryLabels[product.category]}</a>
+				<span class="breadcrumb__sep" aria-hidden="true">/</span>
+				<span aria-current="page">{product.name}</span>
+			</nav>
+
+			<div class="product-layout">
+				<div class="product-gallery">
+					<div class="product-stage" data-stage data-view="full">
+						<span class="product-stage__grid" aria-hidden="true"></span>
+						<span class="product-stage__glow" aria-hidden="true"></span>
+						<span class="product-stage__badge">
+							<Icon name="spark" size={11} stroke={1.5} />
+							Canlı önizleme
+						</span>
+						<div class="product-stage__plate plate-stage" data-tilt data-plate>
+							<Plate
+								text={product.text}
+								city={product.city}
+								variant={product.variant}
+								size={product.size}
+							/>
+						</div>
+						<div class="product-stage__meta">
+							<span class="micro">{product.city} · {product.finish}</span>
+							<span class="micro">Ölçekli görsel</span>
+						</div>
+					</div>
+
+					<div class="product-thumbs" role="group" aria-label="Görünüm seçenekleri">
+						<button class="product-thumb is-active" type="button" data-view="full" aria-pressed="true">
+							<span class="product-thumb__inner"><Plate text={product.text} city={product.city} variant={product.variant} size={product.size} screws={false} /></span>
+							<span>Tam</span>
+						</button>
+						<button class="product-thumb" type="button" data-view="detail" aria-pressed="false">
+							<span class="product-thumb__inner product-thumb__inner--detail"><Plate text={product.text} city={product.city} variant={product.variant} size={product.size} screws={false} /></span>
+							<span>Detay</span>
+						</button>
+						<button class="product-thumb" type="button" data-view="angle" aria-pressed="false">
+							<span class="product-thumb__inner product-thumb__inner--angle"><Plate text={product.text} city={product.city} variant={product.variant} size={product.size} screws={false} /></span>
+							<span>Açı</span>
+						</button>
+					</div>
+
+					<div class="product-assurances">
+						<div><Icon name="shield" size={17} /><span><strong>2 yıl</strong> üretim garantisi</span></div>
+						<div><Icon name="truck" size={17} /><span><strong>81 ile</strong> sigortalı kargo</span></div>
+						<div><Icon name="refresh" size={17} /><span><strong>14 gün</strong> iade hakkı</span></div>
+					</div>
+				</div>
+
+				<div class="product-info">
+					<div class="product-info__head">
+						<div class="product-info__badges">
+							<span class="badge">{categoryLabels[product.category]}</span>
+							{product.badge && <span class="badge badge--dark">{product.badge}</span>}
+						</div>
+						<h1 class="product-info__title">{product.name}</h1>
+						<p class="product-info__tagline">{product.tagline}</p>
+					</div>
+
+					<div class="product-info__price">
+						<span class="product-info__amount">{formatPrice(product.price)}</span>
+						<span class="product-info__tax">KDV dahil · fiyat bilgisi</span>
+					</div>
+
+					<p class="product-info__desc">{product.description}</p>
+
+					<ul class="product-info__features">
+						{product.features.map((feature) => (
+							<li>
+								<Icon name="check" size={13} stroke={2} />
+								<span>{feature}</span>
+							</li>
+						))}
+					</ul>
+
+					<PhoneCta
+						variant="compact"
+						eyebrow="Sipariş için arayın"
+						lead="Siparişler telefonla alınır. Ölçü, yüzey ve teslimatı birlikte netleştirelim."
+						message={orderMessage}
+					/>
+
+					<div class="product-specs">
+						{specs.map((spec) => (
+							<div class="product-specs__row">
+								<span>{spec.label}</span>
+								<span>{spec.value}</span>
+							</div>
+						))}
+					</div>
+
+					<div class="product-accordion">
+						{accordion.map((item, index) => (
+							<details class="product-accordion__item" open={index === 0}>
+								<summary>
+									<span>{item.title}</span>
+									<span class="product-accordion__icon"><Icon name="plus" size={15} stroke={1.7} /></span>
+								</summary>
+								<div class="product-accordion__body">{item.body}</div>
+							</details>
+						))}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{related.length > 0 && (
+			<section class="section related">
+				<div class="container">
+					<div class="section-head reveal">
+						<div class="section-head__main">
+							<span class="eyebrow">Bunlarla da ilgilenebilirsiniz</span>
+							<h2 class="h2">Aynı <span class="serif">aileden.</span></h2>
+						</div>
+						<div class="section-head__aside">
+							<a class="link-arrow" href="/plakalar">
+								Tüm koleksiyon
+								<Icon name="arrow-up-right" size={15} stroke={1.6} />
+							</a>
+						</div>
+					</div>
+					<div class="related__grid">
+						{related.map((item, index) => (
+							<ProductCard product={item} index={index} />
+						))}
+					</div>
+				</div>
+			</section>
+		)}
+
+		<div class="mobile-buy">
+			<div class="mobile-buy__price">
+				<span class="micro">{product.name}</span>
+				<strong>{formatPrice(product.price)}</strong>
+			</div>
+			<a class="btn btn--gold btn--sm" href={telHref}>
+				Sipariş İçin Ara
+			</a>
+		</div>
+	</div>
+</BaseLayout>
+
+<style>
+	.product-page {
+		padding-bottom: 0;
+	}
+
+	.product-crumbs {
+		padding: 26px 0 22px;
+	}
+
+	.product-layout {
+		display: grid;
+		grid-template-columns: 1.02fr 0.98fr;
+		gap: clamp(32px, 5vw, 72px);
+		align-items: start;
+		padding-bottom: clamp(56px, 7vw, 96px);
+	}
+
+	/* Gallery */
+	.product-gallery {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		position: sticky;
+		top: calc(var(--header-h) + 22px);
+	}
+
+	.product-stage {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 420px;
+		padding: clamp(28px, 4vw, 58px);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-lg);
+		background:
+			radial-gradient(110% 100% at 50% 18%, rgba(201, 168, 106, 0.12), transparent 55%),
+			radial-gradient(80% 80% at 88% 100%, rgba(35, 59, 112, 0.18), transparent 60%),
+			linear-gradient(160deg, #12151b, #090a0d 75%);
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.product-stage__grid {
+		position: absolute;
+		inset: 0;
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+		background-size: 46px 46px;
+		mask-image: radial-gradient(75% 70% at 50% 45%, #000, transparent 78%);
+		-webkit-mask-image: radial-gradient(75% 70% at 50% 45%, #000, transparent 78%);
+		pointer-events: none;
+	}
+
+	.product-stage__glow {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 62%;
+		height: 58%;
+		transform: translate(-50%, -50%);
+		background: rgba(201, 168, 106, 0.16);
+		filter: blur(66px);
+		border-radius: 50%;
+		pointer-events: none;
+	}
+
+	.product-stage__badge {
+		position: absolute;
+		top: 18px;
+		left: 18px;
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		padding: 7px 11px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: rgba(7, 8, 10, 0.55);
+		backdrop-filter: blur(10px);
+		font-size: 9px;
+		font-weight: 650;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+
+	.product-stage__badge .icon {
+		color: var(--gold);
+	}
+
+	.product-stage__plate {
+		position: relative;
+		z-index: 2;
+		width: 88%;
+		transition:
+			transform 0.8s var(--ease),
+			width 0.6s var(--ease);
+		filter: drop-shadow(0 34px 44px rgba(0, 0, 0, 0.5));
+	}
+
+	.product-stage[data-view='detail'] .product-stage__plate {
+		width: 132%;
+		transform: translate(-4%, 4%) rotate(-3deg);
+	}
+
+	.product-stage[data-view='angle'] .product-stage__plate {
+		width: 96%;
+		transform: perspective(900px) rotateX(18deg) rotateY(-26deg) rotateZ(2deg);
+	}
+
+	.product-stage__meta {
+		position: absolute;
+		left: 20px;
+		right: 20px;
+		bottom: 16px;
+		display: flex;
+		justify-content: space-between;
+		gap: 16px;
+		padding-top: 14px;
+		border-top: 1px solid var(--line);
+	}
+
+	.product-thumbs {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 10px;
+	}
+
+	.product-thumb {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		padding: 10px;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: rgba(255, 255, 255, 0.018);
+		color: var(--text-dim);
+		font-size: 9px;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		transition:
+			border-color 0.3s,
+			color 0.3s,
+			background 0.3s;
+	}
+
+	.product-thumb:hover {
+		color: var(--text-muted);
+		border-color: var(--line-strong);
+	}
+
+	.product-thumb.is-active {
+		border-color: rgba(201, 168, 106, 0.5);
+		background: rgba(201, 168, 106, 0.06);
+		color: var(--text);
+	}
+
+	.product-thumb__inner {
+		display: block;
+		width: 100%;
+		padding: 8px;
+		overflow: hidden;
+	}
+
+	.product-thumb__inner :global(.plate) {
+		transition: transform 0.6s var(--ease);
+	}
+
+	.product-thumb__inner--detail :global(.plate) {
+		transform: scale(1.55) translateX(-13%);
+	}
+
+	.product-thumb__inner--angle :global(.plate) {
+		transform: perspective(300px) rotateY(-28deg) rotateX(8deg);
+	}
+
+	.product-assurances {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1px;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: var(--line);
+		overflow: hidden;
+	}
+
+	.product-assurances > div {
+		display: flex;
+		align-items: center;
+		gap: 9px;
+		padding: 13px;
+		background: #0b0d11;
+		font-size: 9.5px;
+		line-height: 1.4;
+		color: #8d919b;
+	}
+
+	.product-assurances .icon {
+		flex: 0 0 auto;
+		color: var(--gold);
+	}
+
+	.product-assurances strong {
+		font-weight: 650;
+		color: var(--text-muted);
+	}
+
+	/* Info */
+	.product-info {
+		display: flex;
+		flex-direction: column;
+		gap: 22px;
+	}
+
+	.product-info__head {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.product-info__badges {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.product-info__title {
+		font-size: clamp(2.2rem, 4vw, 3.6rem);
+		line-height: 0.98;
+		letter-spacing: -0.055em;
+		font-weight: 430;
+	}
+
+	.product-info__tagline {
+		font-size: 14px;
+		color: var(--text-muted);
+	}
+
+	.product-info__price {
+		display: flex;
+		align-items: baseline;
+		flex-wrap: wrap;
+		gap: 10px;
+		padding: 16px 0;
+		border-top: 1px solid var(--line);
+		border-bottom: 1px solid var(--line);
+	}
+
+	.product-info__amount {
+		font-family: var(--font-display);
+		font-size: clamp(1.7rem, 2.6vw, 2.2rem);
+		font-weight: 550;
+		letter-spacing: -0.045em;
+		color: var(--gold-bright);
+	}
+
+	.product-info__tax {
+		font-size: 9.5px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--text-dim);
+	}
+
+	.product-info__desc {
+		font-size: 13px;
+		line-height: 1.8;
+		color: var(--text-muted);
+	}
+
+	.product-info__features {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 9px 18px;
+	}
+
+	.product-info__features li {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		font-size: 11.5px;
+		line-height: 1.5;
+		color: var(--text-muted);
+	}
+
+	.product-info__features .icon {
+		flex: 0 0 auto;
+		margin-top: 2px;
+		color: var(--gold);
+	}
+
+	.product-specs {
+		display: flex;
+		flex-direction: column;
+		border-top: 1px solid var(--line);
+	}
+
+	.product-specs__row {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 11px 0;
+		border-bottom: 1px solid var(--line);
+		font-size: 11.5px;
+	}
+
+	.product-specs__row span:first-child {
+		color: var(--text-dim);
+		letter-spacing: 0.02em;
+	}
+
+	.product-specs__row span:last-child {
+		color: var(--text-muted);
+		text-align: right;
+	}
+
+	.product-accordion {
+		display: flex;
+		flex-direction: column;
+		border-top: 1px solid var(--line);
+	}
+
+	.product-accordion__item {
+		border-bottom: 1px solid var(--line);
+	}
+
+	.product-accordion__item summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 18px;
+		padding: 15px 0;
+		cursor: pointer;
+		list-style: none;
+		font-size: 12.5px;
+		font-weight: 600;
+		color: var(--text);
+		transition: color 0.25s;
+	}
+
+	.product-accordion__item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.product-accordion__item summary:hover {
+		color: var(--gold-bright);
+	}
+
+	.product-accordion__icon {
+		display: grid;
+		place-items: center;
+		width: 26px;
+		height: 26px;
+		flex: 0 0 26px;
+		border: 1px solid var(--line);
+		border-radius: 50%;
+		color: var(--text-dim);
+		transition: transform 0.35s var(--ease), color 0.3s;
+	}
+
+	.product-accordion__item[open] .product-accordion__icon {
+		transform: rotate(45deg);
+		color: var(--gold);
+	}
+
+	.product-accordion__body {
+		padding: 0 32px 16px 0;
+		font-size: 11.5px;
+		line-height: 1.75;
+		color: var(--text-muted);
+		animation: fade-up 0.35s var(--ease) both;
+	}
+
+	/* Related */
+	.related {
+		border-top: 1px solid var(--line);
+		background: rgba(255, 255, 255, 0.012);
+	}
+
+	.related__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 16px;
+	}
+
+	/* Mobile sticky buy */
+	.mobile-buy {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 90;
+		display: none;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+		border-top: 1px solid var(--line);
+		background: rgba(8, 9, 12, 0.92);
+		backdrop-filter: blur(18px);
+	}
+
+	.mobile-buy__price {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.mobile-buy__price strong {
+		font-family: var(--font-display);
+		font-size: 16px;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+		color: var(--gold-bright);
+	}
+
+	@media (max-width: 980px) {
+		.product-layout {
+			grid-template-columns: 1fr;
+		}
+		.product-gallery {
+			position: relative;
+			top: 0;
+		}
+		.product-stage {
+			min-height: 340px;
+		}
+		.related__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 720px) {
+		.product-assurances {
+			grid-template-columns: 1fr;
+		}
+		.product-assurances > div {
+			padding: 11px 13px;
+		}
+		.mobile-buy {
+			display: flex;
+		}
+		.product-page {
+			padding-bottom: 74px;
+		}
+		.product-info__features {
+			grid-template-columns: 1fr;
+		}
+		.related__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script>
+	const stage = document.querySelector<HTMLElement>('[data-stage]');
+	const thumbs = Array.from(document.querySelectorAll<HTMLButtonElement>('.product-thumb[data-view]'));
+
+	thumbs.forEach((thumb) => {
+		thumb.addEventListener('click', () => {
+			const view = thumb.dataset.view ?? 'full';
+			thumbs.forEach((item) => {
+				const active = item === thumb;
+				item.classList.toggle('is-active', active);
+				item.setAttribute('aria-pressed', active ? 'true' : 'false');
+			});
+			if (stage) stage.dataset.view = view;
+		});
+	});
+</script>

@@ -1,0 +1,1699 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Plate from '../components/Plate.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Configurator from '../components/Configurator.astro';
+import PhoneCta from '../components/PhoneCta.astro';
+import { getFeaturedProducts } from '../data/products';
+import { faqs } from '../data/faq';
+import { site, telHref, whatsappHref } from '../data/site';
+
+const featured = getFeaturedProducts();
+const filters = [
+	{ key: 'all', label: 'Tümü' },
+	{ key: 'normal', label: 'Normal' },
+	{ key: 'app', label: 'App' },
+	{ key: 'koleksiyon', label: 'Koleksiyon' },
+	{ key: 'motosiklet', label: 'Motosiklet' },
+];
+const marqueeItems = [
+	'Müze kalitesinde işçilik',
+	'3D kabartma karakterler',
+	'UV dayanımlı yüzey',
+	'2 yıl üretim garantisi',
+	'81 ile sigortalı kargo',
+	'Telefonla kolay sipariş',
+];
+---
+
+<BaseLayout
+	title="Premium Plaka Atölyesi"
+	description="Normal, app ve koleksiyon plakalar. Müze kalitesinde işçilik, UV dayanımlı yüzeyler ve size özel tasarım. Türkiye’nin 81 iline sigortalı kargo, telefonla kolay sipariş."
+>
+	<!-- ============================== HERO ============================== -->
+	<section class="hero">
+		<div class="hero__bg" aria-hidden="true">
+			<span class="hero__glow hero__glow--gold"></span>
+			<span class="hero__glow hero__glow--blue"></span>
+			<span class="hero__grid"></span>
+		</div>
+
+		<div class="container hero__inner">
+			<div class="hero__copy">
+				<span class="eyebrow reveal">Türkiye geneli · Est. 2014</span>
+
+				<h1 class="hero__title reveal" style="--delay:0.06s">
+					Yolun en <span class="serif">özel</span><br />imzası.
+				</h1>
+
+				<p class="lead hero__lead reveal" style="--delay:0.14s">
+					Normal, app ve koleksiyon plakalar. Müze kalitesinde işçilik, UV dayanımlı
+					yüzeyler ve aracınıza yakışan sessiz lüks.
+				</p>
+
+				<div class="hero__actions reveal" style="--delay:0.2s">
+					<a class="btn btn--gold" href="#koleksiyon">
+						Koleksiyonu Keşfet
+						<Icon name="arrow-right" size={15} stroke={1.8} />
+					</a>
+					<a class="btn btn--outline" href="#tasarim">
+						Plakanı Tasarla
+						<Icon name="spark" size={15} stroke={1.5} />
+					</a>
+				</div>
+
+				<div class="hero__trust reveal" style="--delay:0.28s">
+					<div class="hero__metric">
+						<strong>81 il</strong>
+						<span>sigortalı kargo</span>
+					</div>
+					<span class="hero__trust-sep" aria-hidden="true"></span>
+					<div class="hero__metric">
+						<strong>3D</strong>
+						<span>kabartma karakter</span>
+					</div>
+					<span class="hero__trust-sep" aria-hidden="true"></span>
+					<div class="hero__metric">
+						<strong>2 yıl</strong>
+						<span>üretim garantisi</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="hero__visual reveal" style="--delay:0.18s">
+				<div class="hero__stage">
+					<span class="hero__orbit hero__orbit--1" aria-hidden="true"></span>
+					<span class="hero__orbit hero__orbit--2" aria-hidden="true"></span>
+					<span class="hero__halo" aria-hidden="true"></span>
+
+					<div class="hero__plate hero__plate--back" aria-hidden="true">
+						<Plate text="PLK 81" city="06" variant="app" size="standart" screws={false} />
+					</div>
+
+					<div class="hero__plate hero__plate--front plate-stage" data-tilt>
+						<Plate text="ABC 123" city="35" variant="tr" size="standart" />
+					</div>
+
+					<div class="hero__chip hero__chip--1">
+						<Icon name="spark" size={13} stroke={1.5} />
+						<span>3D kabartma</span>
+					</div>
+					<div class="hero__chip hero__chip--2">
+						<Icon name="shield" size={13} stroke={1.5} />
+						<span>UV dayanımlı</span>
+					</div>
+					<div class="hero__chip hero__chip--3">
+						<Icon name="truck" size={13} stroke={1.5} />
+						<span>81 ile kargo</span>
+					</div>
+
+					<div class="hero__seal" aria-hidden="true">
+						<svg viewBox="0 0 100 100" class="hero__seal-svg">
+							<defs>
+								<path
+									id="sealPath"
+									d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"
+								/>
+							</defs>
+							<text>
+								<textPath href="#sealPath">
+									PLAKA ATELIER · TÜRKİYE · EST. 2014 ·
+								</textPath>
+							</text>
+						</svg>
+						<span class="hero__seal-center">PA</span>
+					</div>
+				</div>
+
+				<div class="hero__caption">
+					<span class="micro">İmza serisi</span>
+					<span class="hero__caption-line" aria-hidden="true"></span>
+					<span class="micro">35 · Standart</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="hero__marquee">
+			<div class="marquee">
+				<div class="marquee__track">
+					{[0, 1].map(() => (
+						<div class="marquee__group">
+							{marqueeItems.map((item) => (
+								<span class="marquee__item">
+									<Icon name="spark" size={10} stroke={1.4} />
+									{item}
+								</span>
+							))}
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================== MANIFESTO ============================== -->
+	<section class="manifesto">
+		<div class="container">
+			<div class="manifesto__inner">
+				<div class="manifesto__copy reveal">
+					<span class="eyebrow">Atölye</span>
+					<h2 class="manifesto__statement">
+						Bir plaka, aracın <span class="serif">imzasıdır.</span><br />
+						Onu sıradan bırakmayın.
+					</h2>
+				</div>
+				<div class="manifesto__side reveal" style="--delay:0.1s">
+					<p>
+						Bir aracı unutulmaz kılan detay, çoğu zaman en küçük olandır. Biz de tam
+						bu yüzden her plakayı bir aksesuar değil, bir imza olarak üretiyoruz.
+					</p>
+					<a class="link-arrow" href="/hakkimizda">
+						Hikâyemizi okuyun
+						<Icon name="arrow-right" size={14} stroke={1.6} />
+					</a>
+				</div>
+			</div>
+
+			<div class="stats-grid reveal" style="--delay:0.14s">
+				<div class="stat">
+					<span class="stat__value"><span data-count="81">81</span><span> il</span></span>
+					<span class="stat__label">Sigortalı kargo ile gönderim</span>
+				</div>
+				<div class="stat">
+					<span class="stat__value"><span data-count="1.2" data-decimals="1">1,2</span><span> mm</span></span>
+					<span class="stat__label">Fırçalanmış alüminyum gövde</span>
+				</div>
+				<div class="stat">
+					<span class="stat__value"><span data-count="12">12</span></span>
+					<span class="stat__label">Yıllık zanaat deneyimi</span>
+				</div>
+				<div class="stat">
+					<span class="stat__value"><span data-count="2">2</span><span> yıl</span></span>
+					<span class="stat__label">Üretim garantisi</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================== COLLECTION ============================== -->
+	<section class="section collection" id="koleksiyon">
+		<div class="container">
+			<div class="section-head reveal">
+				<div class="section-head__main">
+					<span class="eyebrow">Koleksiyon 2026</span>
+					<h2 class="h2">Her araca <span class="serif">bir imza.</span></h2>
+				</div>
+				<div class="section-head__aside">
+					<a class="link-arrow" href="/plakalar">
+						Tüm koleksiyon
+						<Icon name="arrow-up-right" size={15} stroke={1.6} />
+					</a>
+				</div>
+			</div>
+
+			<div class="collection__toolbar reveal">
+				<div class="collection__filters" data-filters role="group" aria-label="Koleksiyon filtresi">
+					{filters.map((filter, index) => (
+						<button
+							class={`chip ${index === 0 ? 'is-active' : ''}`}
+							type="button"
+							data-filter={filter.key}
+						>
+							{filter.label}
+						</button>
+					))}
+				</div>
+				<span class="collection__count micro"><span data-collection-count>{featured.length}</span> parça</span>
+			</div>
+
+			<div class="product-grid" data-product-grid>
+				{featured.map((product, index) => (
+					<ProductCard product={product} index={index} />
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================== CRAFT ============================== -->
+	<section class="section craft theme-bone">
+		<div class="container craft__inner">
+			<div class="craft__visual reveal reveal--left">
+				<figure class="craft__image">
+					<img
+						src="/images/atelier.jpg"
+						alt="Plaka Atelier atölyesinde el işçiliği"
+						width="900"
+						height="1125"
+						loading="lazy"
+					/>
+					<figcaption class="craft__caption">
+						<span class="micro">Atölye · El işçiliği</span>
+						<span class="craft__caption-title">Her parça<br />elden geçer.</span>
+					</figcaption>
+				</figure>
+
+				<div class="craft__float">
+					<span class="craft__float-value">12</span>
+					<span class="craft__float-label">yıllık<br />zanaat</span>
+				</div>
+
+				<div class="craft__mini-plate">
+					<Plate text="EL 01" city="06" variant="gold" size="uzun" screws={false} />
+				</div>
+			</div>
+
+			<div class="craft__content">
+				<span class="eyebrow reveal">Zanaat</span>
+				<h2 class="h2 reveal" style="--delay:0.06s">
+					Makine değil,<br /><span class="serif">el</span> işi.
+				</h2>
+				<p class="lead reveal" style="--delay:0.1s">
+					Her plaka, ustamızın elinden geçen dört ayrı aşamada tamamlanır. Malzemeden son
+					cilaya kadar hiçbir adım atlanmaz; hiçbir parça acele etmez.
+				</p>
+
+				<div class="craft__steps reveal" style="--delay:0.14s">
+					<div class="craft__step">
+						<span class="craft__num">01</span>
+						<div>
+							<h3>Malzeme seçimi</h3>
+							<p>Fırçalanmış 1.2 mm alüminyum; her plaka için tek tek kontrol edilir.</p>
+						</div>
+					</div>
+					<div class="craft__step">
+						<span class="craft__num">02</span>
+						<div>
+							<h3>Katmanlı baskı</h3>
+							<p>UV dayanımlı üç katman; güneş altında yıllarca solmaz.</p>
+						</div>
+					</div>
+					<div class="craft__step">
+						<span class="craft__num">03</span>
+						<div>
+							<h3>3D kabartma</h3>
+							<p>Karakterler tek tek yükseltilir, kenarlar pahlanır ve cilalanır.</p>
+						</div>
+					</div>
+					<div class="craft__step">
+						<span class="craft__num">04</span>
+						<div>
+							<h3>Son kontrol</h3>
+							<p>24 saat dinlendirme, kalite kontrolü ve imzalı sertifika.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="craft__footer reveal" style="--delay:0.18s">
+					<a class="btn btn--dark" href="/hakkimizda">
+						Atölyeyi Keşfet
+						<Icon name="arrow-up-right" size={15} />
+					</a>
+					<div class="craft__signature">
+						<span class="serif">Plaka Atelier</span>
+						<span class="micro">Atölye imzası</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================== CONFIGURATOR ============================== -->
+	<section class="section configurator-section" id="tasarim">
+		<div class="configurator-section__bg" aria-hidden="true"></div>
+		<div class="container">
+			<div class="configurator-section__head reveal">
+				<span class="eyebrow eyebrow--center">Tasarım stüdyosu</span>
+				<p class="configurator-section__note">
+					Birkaç saniyede kendi plakanızı oluşturun. Sonra atölyeye bırakın.
+				</p>
+			</div>
+			<Configurator />
+		</div>
+	</section>
+
+	<!-- ============================== FEATURES ============================== -->
+	<section class="section features">
+		<div class="container">
+			<div class="section-head reveal">
+				<div class="section-head__main">
+					<span class="eyebrow">Neden Plaka Atelier</span>
+					<h2 class="h2">Detaylarda <span class="serif">saklı</span> bir lüks.</h2>
+				</div>
+				<p class="features__intro">
+					Gösterişten değil, malzemeden ve işçilikten gelen bir kalite. Her siparişte
+					aynı özen.
+				</p>
+			</div>
+
+			<div class="features__grid">
+				{[
+					{ icon: 'medal', title: 'Müze kalitesi', text: 'Her parça, üretim sonunda tek tek elden geçer ve imzalı sertifikayla paketlenir.' },
+					{ icon: 'spark', title: '3D kabartma', text: 'Karakterler yüzeye sonradan yapıştırılmaz; malzemenin içinden yükselir.' },
+					{ icon: 'shield', title: 'UV dayanımı', text: 'Üç katmanlı koruma sayesinde renkler yıllar içinde solmaz, kabarmaz.' },
+					{ icon: 'truck', title: '81 ile kargo', text: 'Edirne’den Hakkâri’ye, Türkiye’nin her iline sigortalı kargo ile özenli ambalajında ulaşır.' },
+					{ icon: 'phone', title: 'Telefonla sipariş', text: 'Arayın; ölçüden yüzeye her detayı bir uzmanla birlikte seçin, plakanız size özel hazırlansın.' },
+					{ icon: 'headset', title: 'Kişiye özel hizmet', text: 'Montajdan tasarıma kadar her adımda gerçek bir uzmanla konuşun.' },
+				].map((feature, index) => (
+					<div class="feature reveal" style={`--delay:${index * 0.05}s`}>
+						<div class="feature__top">
+							<span class="feature__icon"><Icon name={feature.icon} size={19} stroke={1.4} /></span>
+							<span class="feature__num">0{index + 1}</span>
+						</div>
+						<h3 class="feature__title">{feature.title}</h3>
+						<p class="feature__text">{feature.text}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================== HOW TO ORDER ============================== -->
+	<section class="section order" id="siparis">
+		<div class="container order__inner">
+			<div class="order__copy">
+				<span class="eyebrow reveal">Nasıl sipariş verilir</span>
+				<h2 class="h2 reveal" style="--delay:0.06s">
+					Sepet yok, form yok.<br /><span class="serif">Sadece bir telefon.</span>
+				</h2>
+				<p class="lead reveal" style="--delay:0.1s">
+					Premium bir parçanın siparişi de kişisel olmalı. Atölyemizle doğrudan konuşun;
+					plakanız size özel hazırlansın ve Türkiye’nin neresinde olursanız olun kapınıza gelsin.
+				</p>
+
+				<ol class="order__steps">
+					{[
+						{ icon: 'spark', title: 'Seçin ya da tasarlayın', text: 'Koleksiyondan bir parça seçin veya tasarım stüdyosunda kendi kombinasyonunuzu oluşturun.' },
+						{ icon: 'phone', title: 'Bizi arayın', text: 'Ölçü, yüzey ve karakterleri bir uzmanla birlikte netleştirin; fiyatı ve teslim tarihini öğrenin.' },
+						{ icon: 'truck', title: 'Kapınıza gelsin', text: 'Atölyede elden geçen plakanız, 81 ilin tamamına sigortalı kargo ile gönderilir.' },
+					].map((step, index) => (
+						<li class="order__step reveal" style={`--delay:${0.12 + index * 0.06}s`}>
+							<span class="order__step-icon"><Icon name={step.icon} size={18} stroke={1.5} /></span>
+							<div>
+								<span class="order__step-no">0{index + 1}</span>
+								<h3>{step.title}</h3>
+								<p>{step.text}</p>
+							</div>
+						</li>
+					))}
+				</ol>
+			</div>
+
+			<div class="order__card reveal" style="--delay:0.12s">
+				<PhoneCta
+					title={`Sipariş için <span class="serif">arayın.</span>`}
+					lead="Atölye ekibimiz telefonun başında. Aklınızdaki plakayı anlatın, gerisini biz halledelim."
+				/>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================== FAQ ============================== -->
+	<section class="section faq">
+		<div class="container faq__grid">
+			<div class="faq__side reveal">
+				<span class="eyebrow">Sıkça sorulanlar</span>
+				<h2 class="h2" style="margin-top:18px">Aklınızda<br /><span class="serif">bir soru</span> kalmasın.</h2>
+				<p class="lead" style="margin-top:18px;font-size:13px">
+					Merak ettiğiniz her şeyi burada topladık. Cevabını bulamadığınız bir şey olursa
+					atölyeyi aramanız yeterli.
+				</p>
+				<a class="btn btn--outline" href="/iletisim" style="margin-top:26px;align-self:flex-start">
+					Bize ulaşın
+					<Icon name="arrow-up-right" size={14} />
+				</a>
+			</div>
+
+			<div class="faq__list reveal" style="--delay:0.1s">
+				{faqs.slice(0, 6).map((faq, index) => (
+					<details class="faq__item" open={index === 0}>
+						<summary>
+							<span>{faq.question}</span>
+							<span class="faq__icon" aria-hidden="true">
+								<Icon name="plus" size={16} stroke={1.6} />
+							</span>
+						</summary>
+						<div class="faq__answer">{faq.answer}</div>
+					</details>
+				))}
+				<a class="link-arrow faq__all" href="/sss">
+					Tüm soruları görün
+					<Icon name="arrow-right" size={14} stroke={1.6} />
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============================== CTA ============================== -->
+	<section class="section cta-section">
+		<div class="container">
+			<div class="cta reveal">
+				<div class="cta__overlay" aria-hidden="true"></div>
+				<div class="cta__content">
+					<span class="eyebrow">Sıra sizde</span>
+					<h2 class="cta__title">Plakanız <span class="serif">hazır mı?</span></h2>
+					<p class="cta__text">
+						Kendi imzanızı bugün oluşturun. Bir telefonla siparişinizi verin; atölyemiz
+						3–5 iş günü içinde özenle hazırlayıp Türkiye’nin her yerine göndersin.
+					</p>
+					<div class="cta__actions">
+						<a class="btn btn--gold btn--lg" href={telHref}>
+							<Icon name="phone" size={15} />
+							{site.phone}
+						</a>
+						<a class="btn btn--outline" href={whatsappHref()} target="_blank" rel="noopener">
+							<Icon name="whatsapp" size={15} />
+							WhatsApp
+						</a>
+					</div>
+					<div class="cta__meta">
+						<span><Icon name="truck" size={13} /> 81 ile sigortalı kargo</span>
+						<span><Icon name="shield" size={13} /> 2 yıl üretim garantisi</span>
+					</div>
+				</div>
+				<div class="cta__plate plate-stage" data-tilt aria-hidden="true">
+					<Plate text="PLK 01" city="06" variant="gold" size="standart" />
+				</div>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<script>
+	const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+	const grid = document.querySelector<HTMLElement>('[data-product-grid]');
+	const count = document.querySelector<HTMLElement>('[data-collection-count]');
+
+	filterButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const filter = button.dataset.filter ?? 'all';
+			filterButtons.forEach((item) => item.classList.toggle('is-active', item === button));
+
+			let visible = 0;
+			grid?.querySelectorAll<HTMLElement>('.product-card').forEach((card) => {
+				const match = filter === 'all' || card.dataset.category === filter;
+				card.classList.toggle('is-hidden', !match);
+				if (match) visible += 1;
+			});
+			if (count) count.textContent = String(visible);
+		});
+	});
+</script>
+
+<style>
+	/* ============================== HERO ============================== */
+	.hero {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		min-height: calc(100svh - 116px);
+		padding: clamp(48px, 5.5vw, 92px) 0 0;
+		overflow: hidden;
+	}
+
+	.hero__bg {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.hero__grid {
+		position: absolute;
+		inset: 0;
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.033) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.033) 1px, transparent 1px);
+		background-size: 72px 72px;
+		mask-image: radial-gradient(80% 75% at 50% 45%, #000, transparent 82%);
+		-webkit-mask-image: radial-gradient(80% 75% at 50% 45%, #000, transparent 82%);
+		opacity: 0.6;
+	}
+
+	.hero__glow {
+		position: absolute;
+		border-radius: 50%;
+		filter: blur(80px);
+		animation: pulse-soft 12s ease-in-out infinite;
+	}
+
+	.hero__glow--gold {
+		top: 6%;
+		right: 8%;
+		width: 42vw;
+		height: 42vw;
+		max-width: 620px;
+		max-height: 620px;
+		background: rgba(201, 168, 106, 0.1);
+	}
+
+	.hero__glow--blue {
+		left: -12%;
+		bottom: -10%;
+		width: 40vw;
+		height: 40vw;
+		max-width: 560px;
+		max-height: 560px;
+		background: rgba(28, 63, 148, 0.16);
+		animation-delay: -4s;
+	}
+
+	.hero__inner {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1.02fr 0.98fr;
+		align-items: center;
+		gap: clamp(30px, 5vw, 80px);
+		padding-bottom: clamp(40px, 5vw, 72px);
+	}
+
+	.hero__copy {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+	}
+
+	.hero__title {
+		font-size: clamp(3.6rem, 7.4vw, 8rem);
+		font-weight: 400;
+		line-height: 0.93;
+		letter-spacing: -0.065em;
+		max-width: 11ch;
+	}
+
+	.hero__title .serif {
+		font-size: 1.06em;
+		color: var(--gold-bright);
+		text-shadow: 0 0 50px rgba(201, 168, 106, 0.25);
+	}
+
+	.hero__lead {
+		max-width: 48ch;
+		font-size: clamp(0.98rem, 1.2vw, 1.1rem);
+	}
+
+	.hero__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		margin-top: 4px;
+	}
+
+	.hero__trust {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 18px;
+		margin-top: 18px;
+	}
+
+	.hero__trust-sep {
+		width: 1px;
+		height: 28px;
+		background: var(--line);
+	}
+
+	.hero__metric {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+		font-size: 9.5px;
+		color: var(--text-dim);
+	}
+
+	.hero__metric strong {
+		font-family: var(--font-display);
+		font-size: 15px;
+		font-weight: 550;
+		color: var(--text);
+		letter-spacing: -0.02em;
+	}
+
+	/* Hero visual */
+	.hero__visual {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.hero__stage {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		max-width: 640px;
+		aspect-ratio: 1.06;
+	}
+
+	.hero__orbit {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 104%;
+		aspect-ratio: 1;
+		border: 1px solid rgba(255, 255, 255, 0.055);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		pointer-events: none;
+	}
+
+	.hero__orbit--2 {
+		width: 82%;
+		border-style: dashed;
+		border-color: rgba(201, 168, 106, 0.14);
+		animation: hero-spin 80s linear infinite;
+	}
+
+	@keyframes hero-spin {
+		to {
+			transform: translate(-50%, -50%) rotate(360deg);
+		}
+	}
+
+	.hero__halo {
+		position: absolute;
+		width: 76%;
+		height: 58%;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(201, 168, 106, 0.2), transparent 66%);
+		filter: blur(46px);
+	}
+
+	.hero__plate {
+		position: absolute;
+		width: 78%;
+	}
+
+	.hero__plate--back {
+		top: 13%;
+		left: 5%;
+		width: 68%;
+		opacity: 0.7;
+		transform: rotate(-8deg) translateZ(-60px);
+		filter: brightness(0.85);
+	}
+
+	.hero__plate--front {
+		position: relative;
+		z-index: 2;
+		width: 92%;
+		--rx: 4deg;
+		--ry: -7deg;
+		filter: drop-shadow(0 50px 60px rgba(0, 0, 0, 0.55));
+	}
+
+	.hero__chip {
+		position: absolute;
+		z-index: 3;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 9px 13px;
+		border: 1px solid var(--line-strong);
+		border-radius: 999px;
+		background: rgba(10, 12, 16, 0.72);
+		backdrop-filter: blur(14px);
+		color: var(--text-muted);
+		font-size: 9.5px;
+		font-weight: 650;
+		letter-spacing: 0.06em;
+		box-shadow: 0 14px 30px -18px rgba(0, 0, 0, 0.9);
+		white-space: nowrap;
+	}
+
+	.hero__chip .icon {
+		color: var(--gold);
+	}
+
+	.hero__chip--1 {
+		top: 7%;
+		right: 2%;
+		animation: float 7s ease-in-out infinite;
+	}
+
+	.hero__chip--2 {
+		top: 34%;
+		left: -1%;
+		animation: float 8s ease-in-out infinite -2s;
+	}
+
+	.hero__chip--3 {
+		right: 5%;
+		bottom: 12%;
+		animation: float 7.5s ease-in-out infinite -4s;
+	}
+
+	.hero__seal {
+		position: absolute;
+		left: 8%;
+		bottom: 5%;
+		z-index: 3;
+		display: grid;
+		place-items: center;
+		width: 86px;
+		height: 86px;
+		border: 1px solid rgba(201, 168, 106, 0.3);
+		border-radius: 50%;
+		background: rgba(7, 8, 10, 0.55);
+		backdrop-filter: blur(10px);
+	}
+
+	.hero__seal-svg {
+		position: absolute;
+		inset: 4px;
+		width: calc(100% - 8px);
+		height: calc(100% - 8px);
+		animation: hero-spin-centered 34s linear infinite;
+	}
+
+	.hero__seal-svg text {
+		fill: rgba(201, 168, 106, 0.8);
+		font-family: var(--font-body);
+		font-size: 7.4px;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	@keyframes hero-spin-centered {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.hero__seal-center {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: 24px;
+		color: var(--gold-bright);
+	}
+
+	.hero__caption {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-top: 8px;
+		color: var(--text-dim);
+	}
+
+	.hero__caption-line {
+		width: 54px;
+		height: 1px;
+		background: var(--line-strong);
+	}
+
+	/* Marquee strip */
+	.hero__marquee {
+		position: relative;
+		border-top: 1px solid var(--line);
+		border-bottom: 1px solid var(--line);
+		background: rgba(255, 255, 255, 0.012);
+		padding: 15px 0;
+	}
+
+	.marquee__item {
+		display: inline-flex;
+		align-items: center;
+		gap: 15px;
+		font-size: 9.5px;
+		font-weight: 650;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--text-dim);
+		white-space: nowrap;
+	}
+
+	.marquee__item .icon {
+		color: var(--gold);
+	}
+
+	@media (max-width: 1020px) {
+		.hero {
+			min-height: auto;
+		}
+		.hero__inner {
+			grid-template-columns: 1fr;
+			gap: 20px;
+		}
+		.hero__copy {
+			max-width: 680px;
+		}
+		.hero__visual {
+			margin-top: 10px;
+		}
+		.hero__stage {
+			max-width: 560px;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.hero {
+			padding-top: 38px;
+		}
+		.hero__title {
+			font-size: clamp(3rem, 13vw, 4.4rem);
+		}
+		.hero__trust {
+			gap: 14px;
+		}
+		.hero__trust-sep {
+			display: none;
+		}
+		.hero__stage {
+			aspect-ratio: 1.05;
+		}
+		.hero__plate--back {
+			top: 10%;
+		}
+		.hero__seal {
+			width: 68px;
+			height: 68px;
+			left: 2%;
+			bottom: 2%;
+		}
+		.hero__chip {
+			font-size: 8.5px;
+			padding: 7px 10px;
+		}
+		.hero__chip--2 {
+			left: -2%;
+		}
+	}
+
+	/* ============================== MANIFESTO ============================== */
+	.manifesto {
+		position: relative;
+		padding: clamp(70px, 8vw, 120px) 0 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.manifesto__inner {
+		display: grid;
+		grid-template-columns: 1.35fr 0.65fr;
+		gap: clamp(34px, 6vw, 100px);
+		align-items: end;
+	}
+
+	.manifesto__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.manifesto__statement {
+		font-size: clamp(2rem, 4.2vw, 4.1rem);
+		line-height: 1.05;
+		font-weight: 400;
+		letter-spacing: -0.05em;
+	}
+
+	.manifesto__statement .serif {
+		color: var(--gold-bright);
+		font-size: 1.08em;
+	}
+
+	.manifesto__side {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 22px;
+		padding-bottom: 8px;
+	}
+
+	.manifesto__side p {
+		font-size: 12.5px;
+		line-height: 1.8;
+		color: var(--text-muted);
+	}
+
+	.stats-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		margin-top: clamp(52px, 7vw, 86px);
+		border-top: 1px solid var(--line);
+	}
+
+	.stat {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 28px 26px;
+		border-right: 1px solid var(--line);
+	}
+
+	.stat:first-child {
+		padding-left: 0;
+	}
+
+	.stat:last-child {
+		border-right: 0;
+	}
+
+	.stat__value {
+		font-family: var(--font-display);
+		font-size: clamp(1.9rem, 3.1vw, 3rem);
+		font-weight: 400;
+		letter-spacing: -0.055em;
+		line-height: 1;
+		color: var(--text);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.stat__value > span:last-child:not(:first-child) {
+		color: var(--gold);
+		font-size: 0.55em;
+		letter-spacing: -0.02em;
+	}
+
+	.stat__label {
+		font-size: 9.5px;
+		font-weight: 650;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--text-dim);
+	}
+
+	@media (max-width: 900px) {
+		.manifesto__inner {
+			grid-template-columns: 1fr;
+			align-items: start;
+		}
+		.stats-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.stat:nth-child(2) {
+			border-right: 0;
+		}
+		.stat:nth-child(3),
+		.stat:nth-child(4) {
+			border-top: 1px solid var(--line);
+		}
+		.stat:nth-child(3) {
+			padding-left: 0;
+		}
+	}
+
+	/* ============================== COLLECTION ============================== */
+	.collection {
+		padding-bottom: clamp(80px, 9vw, 140px);
+	}
+
+	.collection__toolbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		margin-bottom: 28px;
+	}
+
+	.collection__filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 7px;
+	}
+
+	.collection__count {
+		white-space: nowrap;
+	}
+
+	.product-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 16px;
+	}
+
+	.product-grid :global(.product-card.is-hidden) {
+		display: none;
+	}
+
+	@media (max-width: 980px) {
+		.product-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 600px) {
+		.collection__toolbar {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 14px;
+		}
+		.product-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* ============================== CRAFT ============================== */
+	.craft {
+		--gold: #8d6c37;
+		--gold-bright: #7d5d2a;
+		overflow: hidden;
+	}
+
+	.craft__inner {
+		display: grid;
+		grid-template-columns: 0.92fr 1.08fr;
+		gap: clamp(40px, 6vw, 104px);
+		align-items: center;
+	}
+
+	.craft__visual {
+		position: relative;
+	}
+
+	.craft__image {
+		position: relative;
+		margin: 0;
+		aspect-ratio: 4 / 5;
+		border-radius: 18px;
+		overflow: hidden;
+		background: #1a1a1a;
+		box-shadow: 0 50px 100px -50px rgba(40, 33, 20, 0.55);
+	}
+
+	.craft__image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: saturate(0.7) contrast(1.06) brightness(0.82);
+		transition: transform 1.4s var(--ease);
+	}
+
+	.craft__image:hover img {
+		transform: scale(1.035);
+	}
+
+	.craft__image::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(180deg, rgba(9, 8, 6, 0.1), transparent 35%, rgba(9, 8, 6, 0.78)),
+			linear-gradient(90deg, rgba(201, 168, 106, 0.12), transparent 45%);
+		pointer-events: none;
+	}
+
+	.craft__caption {
+		position: absolute;
+		left: 26px;
+		right: 26px;
+		bottom: 24px;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		color: #f4f1ea;
+	}
+
+	.craft__caption .micro {
+		color: rgba(244, 241, 234, 0.65);
+	}
+
+	.craft__caption-title {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: clamp(1.8rem, 3vw, 2.8rem);
+		line-height: 1;
+		letter-spacing: -0.02em;
+	}
+
+	.craft__float {
+		position: absolute;
+		top: -22px;
+		right: -20px;
+		z-index: 3;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 16px 20px;
+		border-radius: 14px;
+		background: #141517;
+		color: #f4f1ea;
+		box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.65);
+	}
+
+	.craft__float-value {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: 2.6rem;
+		line-height: 0.9;
+		color: var(--gold-bright);
+	}
+
+	.craft__float-label {
+		font-size: 9px;
+		font-weight: 650;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		line-height: 1.4;
+		color: rgba(244, 241, 234, 0.55);
+	}
+
+	.craft__mini-plate {
+		position: absolute;
+		left: -34px;
+		bottom: 80px;
+		z-index: 3;
+		width: 52%;
+		transform: rotate(-5deg);
+		filter: drop-shadow(0 26px 30px rgba(20, 15, 8, 0.35));
+	}
+
+	.craft__content {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 18px;
+	}
+
+	.craft__content .lead {
+		font-size: 13px;
+		max-width: 48ch;
+	}
+
+	.craft__steps {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin-top: 14px;
+		border-top: 1px solid var(--line);
+	}
+
+	.craft__step {
+		display: grid;
+		grid-template-columns: 48px 1fr;
+		gap: 16px;
+		align-items: start;
+		padding: 18px 0;
+		border-bottom: 1px solid var(--line);
+		transition: padding-left 0.4s var(--ease);
+	}
+
+	.craft__step:hover {
+		padding-left: 6px;
+	}
+
+	.craft__num {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: 1.35rem;
+		line-height: 1.1;
+		color: var(--gold);
+	}
+
+	.craft__step h3 {
+		font-size: 14.5px;
+		font-family: var(--font-display);
+		font-weight: 550;
+		letter-spacing: -0.02em;
+		margin-bottom: 3px;
+	}
+
+	.craft__step p {
+		font-size: 11.5px;
+		line-height: 1.65;
+		color: var(--text-muted);
+	}
+
+	.craft__footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 30px;
+		width: 100%;
+		margin-top: 18px;
+	}
+
+	.craft__signature {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 2px;
+		text-align: right;
+	}
+
+	.craft__signature .serif {
+		font-size: 1.7rem;
+		color: var(--text);
+	}
+
+	@media (max-width: 940px) {
+		.craft__inner {
+			grid-template-columns: 1fr;
+		}
+		.craft__visual {
+			max-width: 520px;
+			width: 100%;
+			margin-inline: auto;
+		}
+	}
+
+	@media (max-width: 560px) {
+		.craft__mini-plate {
+			left: -12px;
+			bottom: 60px;
+			width: 58%;
+		}
+		.craft__float {
+			right: -8px;
+		}
+		.craft__footer {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+		.craft__signature {
+			align-items: flex-start;
+			text-align: left;
+		}
+	}
+
+	/* ============================== CONFIGURATOR ============================== */
+	.configurator-section {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.configurator-section__bg {
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(800px 500px at 50% 0%, rgba(30, 48, 92, 0.18), transparent 65%),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.014), transparent 30%);
+		pointer-events: none;
+	}
+
+	.configurator-section__head {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: clamp(36px, 4vw, 56px);
+		text-align: center;
+	}
+
+	.configurator-section__note {
+		font-size: 12px;
+		color: var(--text-dim);
+	}
+
+	/* ============================== FEATURES ============================== */
+	.features {
+		padding-top: 0;
+	}
+
+	.features__intro {
+		max-width: 32ch;
+		font-size: 12.5px;
+		line-height: 1.75;
+		color: var(--text-muted);
+		padding-bottom: 6px;
+	}
+
+	.features__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		border-top: 1px solid var(--line);
+		border-left: 1px solid var(--line);
+	}
+
+	.feature {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		padding: clamp(24px, 3vw, 38px);
+		border-right: 1px solid var(--line);
+		border-bottom: 1px solid var(--line);
+		background: rgba(255, 255, 255, 0.008);
+		overflow: hidden;
+		transition: background 0.5s var(--ease-soft);
+	}
+
+	.feature::before {
+		content: '';
+		position: absolute;
+		inset: auto -20% -60% auto;
+		width: 200px;
+		height: 200px;
+		background: radial-gradient(circle, rgba(201, 168, 106, 0.12), transparent 65%);
+		opacity: 0;
+		transition: opacity 0.5s var(--ease-soft);
+	}
+
+	.feature:hover {
+		background: rgba(255, 255, 255, 0.022);
+	}
+
+	.feature:hover::before {
+		opacity: 1;
+	}
+
+	.feature__top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+		margin-bottom: 6px;
+	}
+
+	.feature__icon {
+		display: grid;
+		place-items: center;
+		width: 42px;
+		height: 42px;
+		border: 1px solid var(--line);
+		border-radius: 50%;
+		color: var(--gold);
+		background: rgba(255, 255, 255, 0.02);
+		transition:
+			border-color 0.4s,
+			background 0.4s;
+	}
+
+	.feature:hover .feature__icon {
+		border-color: rgba(201, 168, 106, 0.35);
+		background: rgba(201, 168, 106, 0.06);
+	}
+
+	.feature__num {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: 1.3rem;
+		color: var(--text-dim);
+	}
+
+	.feature__title {
+		font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+		font-weight: 500;
+		letter-spacing: -0.025em;
+	}
+
+	.feature__text {
+		max-width: 30ch;
+		font-size: 11.5px;
+		line-height: 1.7;
+		color: var(--text-dim);
+	}
+
+	@media (max-width: 900px) {
+		.features__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 560px) {
+		.features__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* ============================== FAQ ============================== */
+	.faq__grid {
+		display: grid;
+		grid-template-columns: 0.82fr 1.18fr;
+		gap: clamp(40px, 7vw, 120px);
+		align-items: start;
+	}
+
+	.faq__side {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		position: sticky;
+		top: calc(var(--header-h) + 40px);
+	}
+
+	.faq__list {
+		display: flex;
+		flex-direction: column;
+		border-top: 1px solid var(--line);
+	}
+
+	.faq__item {
+		border-bottom: 1px solid var(--line);
+	}
+
+	.faq__item summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 20px 0;
+		cursor: pointer;
+		list-style: none;
+		font-family: var(--font-display);
+		font-size: clamp(0.95rem, 1.2vw, 1.08rem);
+		font-weight: 450;
+		letter-spacing: -0.02em;
+		color: var(--text);
+		transition: color 0.25s;
+	}
+
+	.faq__item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq__item summary:hover {
+		color: var(--gold-bright);
+	}
+
+	.faq__icon {
+		display: grid;
+		place-items: center;
+		width: 30px;
+		height: 30px;
+		flex: 0 0 30px;
+		border: 1px solid var(--line);
+		border-radius: 50%;
+		color: var(--text-muted);
+		transition:
+			transform 0.4s var(--ease),
+			border-color 0.3s,
+			color 0.3s;
+	}
+
+	.faq__item[open] .faq__icon {
+		transform: rotate(45deg);
+		border-color: rgba(201, 168, 106, 0.5);
+		color: var(--gold);
+	}
+
+	.faq__answer {
+		max-width: 62ch;
+		padding: 0 40px 22px 0;
+		font-size: 12.5px;
+		line-height: 1.8;
+		color: var(--text-muted);
+		animation: fade-up 0.4s var(--ease) both;
+	}
+
+	.faq__all {
+		align-self: flex-start;
+		margin-top: 24px;
+	}
+
+	@media (max-width: 860px) {
+		.faq__grid {
+			grid-template-columns: 1fr;
+			gap: 34px;
+		}
+		.faq__side {
+			position: static;
+		}
+	}
+
+	/* ============================== CTA ============================== */
+	.cta-section {
+		padding-top: 0;
+	}
+
+	.cta {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1.05fr 0.95fr;
+		align-items: center;
+		min-height: 430px;
+		border: 1px solid var(--line-strong);
+		border-radius: 24px;
+		background: url('/images/editorial-car.jpg') center / cover no-repeat;
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.cta__overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background:
+			linear-gradient(90deg, rgba(6, 7, 9, 0.97) 0%, rgba(6, 7, 9, 0.82) 45%, rgba(6, 7, 9, 0.45) 100%),
+			linear-gradient(0deg, rgba(6, 7, 9, 0.7), transparent 60%);
+	}
+
+	.cta__content {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 18px;
+		padding: clamp(34px, 5vw, 72px);
+		max-width: 560px;
+	}
+
+	.cta__title {
+		font-size: clamp(2.5rem, 4.8vw, 4.8rem);
+		line-height: 0.98;
+		font-weight: 400;
+		letter-spacing: -0.055em;
+	}
+
+	.cta__title .serif {
+		color: var(--gold-bright);
+		font-size: 1.05em;
+	}
+
+	.cta__text {
+		max-width: 40ch;
+		font-size: 12.5px;
+		line-height: 1.75;
+		color: var(--text-muted);
+	}
+
+	.cta__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 8px;
+	}
+
+	.cta__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+		margin-top: 12px;
+		font-size: 9.5px;
+		color: var(--text-dim);
+	}
+
+	.cta__meta span {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+	}
+
+	.cta__meta .icon {
+		color: var(--gold);
+	}
+
+	.cta__plate {
+		position: relative;
+		z-index: 2;
+		width: 82%;
+		max-width: 500px;
+		margin: 30px auto;
+		--rx: 3deg;
+		--ry: -6deg;
+		filter: drop-shadow(0 44px 50px rgba(0, 0, 0, 0.65));
+	}
+
+	@media (max-width: 880px) {
+		.cta {
+			grid-template-columns: 1fr;
+		}
+		.cta__overlay {
+			background:
+				linear-gradient(180deg, rgba(6, 7, 9, 0.94), rgba(6, 7, 9, 0.82)),
+				linear-gradient(90deg, rgba(6, 7, 9, 0.75), transparent);
+		}
+		.cta__plate {
+			width: 70%;
+			margin: 0 auto 38px;
+		}
+	}
+
+	/* ============================== HOW TO ORDER ============================== */
+	.order {
+		position: relative;
+		border-top: 1px solid var(--line);
+		background:
+			radial-gradient(800px 420px at 90% 30%, rgba(201, 168, 106, 0.08), transparent 60%),
+			radial-gradient(700px 400px at 0% 100%, rgba(28, 63, 148, 0.1), transparent 60%);
+	}
+
+	.order__inner {
+		display: grid;
+		grid-template-columns: 1fr minmax(0, 540px);
+		align-items: center;
+		gap: clamp(36px, 6vw, 96px);
+	}
+
+	.order__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.order__steps {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		margin-top: 10px;
+		padding: 0;
+		list-style: none;
+	}
+
+	.order__step {
+		display: flex;
+		align-items: flex-start;
+		gap: 18px;
+		padding: 18px 0;
+		border-top: 1px solid var(--line);
+	}
+
+	.order__step:last-child {
+		border-bottom: 1px solid var(--line);
+	}
+
+	.order__step-icon {
+		flex: 0 0 auto;
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border: 1px solid rgba(201, 168, 106, 0.3);
+		border-radius: 50%;
+		background: rgba(201, 168, 106, 0.06);
+		color: var(--gold-bright);
+	}
+
+	.order__step-no {
+		font-size: 9px;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		color: var(--gold);
+	}
+
+	.order__step h3 {
+		margin-top: 3px;
+		font-size: 1.05rem;
+		font-weight: 550;
+		letter-spacing: -0.02em;
+	}
+
+	.order__step p {
+		margin-top: 5px;
+		font-size: 12px;
+		line-height: 1.7;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 960px) {
+		.order__inner {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

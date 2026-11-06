@@ -1,0 +1,354 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { products, categoryLabels } from '../data/products';
+import { site, telHref, whatsappHref } from '../data/site';
+
+const pathname = Astro.url.pathname;
+const isActive = (path: string) =>
+	path === '/' ? pathname === '/' : pathname === path || pathname.startsWith(`${path}/`);
+
+const nav = [
+	{ label: 'Plakalar', href: '/plakalar', mega: true },
+	{ label: 'Koleksiyon', href: '/plakalar?kategori=koleksiyon' },
+	{ label: 'Atölye', href: '/hakkimizda' },
+	{ label: 'SSS', href: '/sss' },
+	{ label: 'İletişim', href: '/iletisim' },
+];
+
+const categories = (['normal', 'app', 'koleksiyon', 'motosiklet'] as const).map((key) => ({
+	key,
+	label: categoryLabels[key],
+	count: products.filter((product) => product.category === key).length,
+}));
+---
+
+<div class="topbar">
+	<div class="container topbar__inner">
+		<div class="topbar__group">
+			<span class="topbar__item">
+				<Icon name="spark" size={12} stroke={1.4} />
+				<span>Premium plaka atölyesi · El işçiliği</span>
+			</span>
+			<span class="topbar__dot" aria-hidden="true"></span>
+			<span class="topbar__item topbar__item--hide">Türkiye geneli · Est. 2014</span>
+		</div>
+		<div class="topbar__group topbar__group--right">
+			<span class="topbar__item">
+				<Icon name="truck" size={12} stroke={1.4} />
+				<span>81 ile sigortalı kargo</span>
+			</span>
+			<span class="topbar__dot" aria-hidden="true"></span>
+			<a class="topbar__item" href={telHref}>
+				<Icon name="phone" size={12} stroke={1.4} />
+				<span>Sipariş hattı · {site.phone}</span>
+			</a>
+		</div>
+	</div>
+</div>
+
+<header class="site-header" data-header>
+	<div class="container header__inner">
+		<Logo />
+
+		<nav class="header__nav" aria-label="Ana menü">
+			{nav.map((item) =>
+				item.mega ? (
+					<div class="header__dropdown">
+						<a class={`header__link ${isActive('/plakalar') ? 'is-active' : ''}`} href={item.href}>
+							{item.label}
+							<Icon name="chevron-down" size={11} stroke={1.8} />
+						</a>
+						<div class="mega" aria-label="Plaka kategorileri">
+							<div class="mega__grid">
+								<span class="mega__eyebrow">Koleksiyonlar</span>
+								{categories.map((category) => (
+									<a class="mega__item" href={`/plakalar?kategori=${category.key}`}>
+										<span class="mega__item-main">
+											<span class="mega__item-title">{category.label}</span>
+											<span class="mega__item-meta">{category.count} ürün</span>
+										</span>
+										<Icon name="arrow-up-right" size={14} stroke={1.5} />
+									</a>
+								))}
+								<a class="mega__all" href="/plakalar">
+									Tüm koleksiyonu gör
+									<Icon name="arrow-right" size={14} stroke={1.5} />
+								</a>
+							</div>
+							<a class="mega__feature" href="/plakalar/atelier-signature">
+								<span class="mega__feature-label">Atölye imzası</span>
+								<span class="mega__feature-plate">
+									<span class="mega__feature-band">TR</span>
+									<span>34 PLK 01</span>
+								</span>
+								<span class="mega__feature-name">Atelier Signature</span>
+								<span class="mega__feature-price">18.900 ₺</span>
+							</a>
+						</div>
+					</div>
+				) : (
+					<a
+						class={`header__link ${isActive(item.href.split('?')[0]) ? 'is-active' : ''}`}
+						href={item.href}
+					>
+						{item.label}
+					</a>
+				),
+			)}
+		</nav>
+
+		<div class="header__actions">
+			<button class="icon-btn" type="button" aria-label="Ürün ara" data-search-open>
+				<Icon name="search" size={18} />
+			</button>
+
+			<a class="header__phone" href={telHref} aria-label={`Sipariş hattı: ${site.phone}`}>
+				<span class="header__phone-icon"><Icon name="phone" size={14} stroke={1.7} /></span>
+				<span class="header__phone-copy">
+					<span class="header__phone-label">Sipariş hattı</span>
+					<span class="header__phone-number">{site.phone}</span>
+				</span>
+			</a>
+
+			<a class="btn btn--gold btn--sm header__cta" href="/#tasarim">
+				Plakanı Tasarla
+				<Icon name="arrow-up-right" size={14} stroke={1.8} />
+			</a>
+
+			<button class="icon-btn menu-toggle" type="button" aria-label="Menüyü aç" data-menu-open>
+				<Icon name="menu" size={20} />
+			</button>
+		</div>
+	</div>
+</header>
+
+<div class="mobile-menu" data-mobile-menu aria-hidden="true" inert>
+	<div class="mobile-menu__head">
+		<Logo />
+		<button class="icon-btn" type="button" aria-label="Menüyü kapat" data-menu-close>
+			<Icon name="close" size={22} />
+		</button>
+	</div>
+	<nav class="mobile-menu__nav" aria-label="Mobil menü">
+		{nav.map((item, index) => (
+			<a
+				class="mobile-menu__link"
+				href={item.href}
+				style={`--delay:${0.06 + index * 0.05}s`}
+				data-menu-link
+			>
+				{item.label}
+				<Icon name="arrow-up-right" size={20} stroke={1.3} />
+			</a>
+		))}
+	</nav>
+	<div class="mobile-menu__foot">
+		<a class="mobile-menu__phone" href={telHref}>
+			<span class="micro">Sipariş için arayın</span>
+			<strong>{site.phone}</strong>
+		</a>
+		<div class="mobile-menu__actions">
+			<a class="btn btn--gold" href={telHref}>
+				<Icon name="phone" size={15} />
+				Hemen Ara
+			</a>
+			<a class="btn btn--outline" href={whatsappHref()} target="_blank" rel="noopener">
+				<Icon name="whatsapp" size={15} />
+				WhatsApp
+			</a>
+		</div>
+	</div>
+</div>
+
+<div class="search-overlay" data-search-overlay aria-hidden="true" inert>
+	<div
+		class="search-panel"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Ürün ara"
+		data-search-panel
+	>
+		<div class="search-panel__head">
+			<Icon name="search" size={20} stroke={1.4} />
+			<input
+				class="search-panel__input"
+				type="search"
+				placeholder="Plaka, koleksiyon veya model ara…"
+				autocomplete="off"
+				data-search-input
+			/>
+			<kbd class="search-panel__kbd">ESC</kbd>
+			<button class="icon-btn" type="button" aria-label="Aramayı kapat" data-search-close>
+				<Icon name="close" size={20} />
+			</button>
+		</div>
+		<div class="search-results" data-search-results></div>
+		<div class="search-panel__foot">
+			<span class="micro">Popüler</span>
+			<button class="search-tag" type="button" data-search-term="App">App Plaka</button>
+			<button class="search-tag" type="button" data-search-term="Koleksiyon">Koleksiyon</button>
+			<button class="search-tag" type="button" data-search-term="Motosiklet">Motosiklet</button>
+			<button class="search-tag" type="button" data-search-term="Altın">Altın</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	import { categoryLabels, products } from '../data/products';
+	import { formatPrice } from '../lib/format';
+	import { escapeHtml } from '../lib/ui';
+
+	const qs = <T extends Element = HTMLElement>(selector: string) =>
+		document.querySelector<T>(selector);
+
+	const header = qs('[data-header]');
+	const searchOverlay = qs('[data-search-overlay]');
+	const searchInput = qs<HTMLInputElement>('[data-search-input]');
+	const searchResults = qs('[data-search-results]');
+	const mobileMenu = qs('[data-mobile-menu]');
+
+	const bandFor = (variant: string) =>
+		variant === 'fr' ? 'F' : variant === 'de' ? 'D' : variant === 'green' ? 'EU' : 'TR';
+
+	function syncScrollLock(): void {
+		const open = [searchOverlay, mobileMenu].some((el) => el?.classList.contains('is-open'));
+		document.body.classList.toggle('no-scroll', open);
+	}
+
+	function openSearch(): void {
+		if (!searchOverlay) return;
+		searchOverlay.classList.add('is-open');
+		searchOverlay.setAttribute('aria-hidden', 'false');
+		searchOverlay.removeAttribute('inert');
+		syncScrollLock();
+		window.setTimeout(() => searchInput?.focus(), 80);
+		renderSearch(searchInput?.value ?? '');
+	}
+
+	function closeSearch(): void {
+		if (!searchOverlay) return;
+		searchOverlay.classList.remove('is-open');
+		searchOverlay.setAttribute('aria-hidden', 'true');
+		searchOverlay.setAttribute('inert', '');
+		syncScrollLock();
+	}
+
+	function openMenu(): void {
+		if (!mobileMenu) return;
+		mobileMenu.classList.add('is-open');
+		mobileMenu.setAttribute('aria-hidden', 'false');
+		mobileMenu.removeAttribute('inert');
+		syncScrollLock();
+	}
+
+	function closeMenu(): void {
+		if (!mobileMenu) return;
+		mobileMenu.classList.remove('is-open');
+		mobileMenu.setAttribute('aria-hidden', 'true');
+		mobileMenu.setAttribute('inert', '');
+		syncScrollLock();
+	}
+
+	const popular = ['06 ABC 123', 'App Karbon', 'Koleksiyon', 'Altın', 'Motosiklet'];
+
+	function renderSearch(query: string): void {
+		if (!searchResults) return;
+		const term = query.trim().toLocaleLowerCase('tr');
+
+		if (!term) {
+			searchResults.innerHTML = `
+				<div class="search-suggest">
+					<span class="micro">Öne çıkan aramalar</span>
+					<div class="search-suggest__tags">
+						${popular.map((item) => `<button class="search-tag" type="button" data-search-term="${item}">${item}</button>`).join('')}
+					</div>
+				</div>`;
+			return;
+		}
+
+		const matches = products
+			.filter((product) => {
+				const haystack = [
+					product.name,
+					product.tagline,
+					product.finish,
+					product.city,
+					product.text,
+					categoryLabels[product.category],
+				]
+					.join(' ')
+					.toLocaleLowerCase('tr');
+				return haystack.includes(term);
+			})
+			.slice(0, 6);
+
+		if (matches.length === 0) {
+			searchResults.innerHTML = `
+				<div class="search-empty">
+					<p>“${escapeHtml(query)}” için sonuç bulunamadı.</p>
+					<span>Farklı bir anahtar kelime deneyin veya koleksiyona göz atın.</span>
+				</div>`;
+			return;
+		}
+
+		searchResults.innerHTML = `
+			<div class="search-list">
+				${matches
+					.map(
+						(product) => `
+					<a class="search-result" href="/plakalar/${product.slug}" data-search-result>
+						<span class="search-result__plate mini-plate mini-plate--${product.variant}">
+							<span class="mini-plate__band">${bandFor(product.variant)}</span>
+							<span class="mini-plate__text">${product.city} ${product.text}</span>
+						</span>
+						<span class="search-result__info">
+							<span class="search-result__name">${escapeHtml(product.name)}</span>
+							<span class="search-result__meta">${categoryLabels[product.category]} · ${escapeHtml(product.finish)}</span>
+						</span>
+						<span class="search-result__price">${formatPrice(product.price)}</span>
+						<svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M8 7h9v9"/></svg>
+					</a>`,
+					)
+					.join('')}
+			</div>`;
+	}
+
+	qs('[data-search-open]')?.addEventListener('click', openSearch);
+	qs('[data-search-close]')?.addEventListener('click', closeSearch);
+	searchOverlay?.addEventListener('click', (event) => {
+		const target = event.target as HTMLElement;
+		if (!target.closest('[data-search-panel]')) {
+			closeSearch();
+			return;
+		}
+		const term = target.closest<HTMLElement>('[data-search-term]');
+		if (term?.dataset.searchTerm && searchInput) {
+			searchInput.value = term.dataset.searchTerm;
+			renderSearch(term.dataset.searchTerm);
+			searchInput.focus();
+		}
+		if (target.closest('[data-search-result]')) closeSearch();
+	});
+	searchInput?.addEventListener('input', () => renderSearch(searchInput.value));
+
+	qs('[data-menu-open]')?.addEventListener('click', openMenu);
+	qs('[data-menu-close]')?.addEventListener('click', closeMenu);
+	document.querySelectorAll('[data-menu-link]').forEach((link) => link.addEventListener('click', closeMenu));
+
+	document.addEventListener('keydown', (event) => {
+		if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+			event.preventDefault();
+			openSearch();
+		}
+		if (event.key === 'Escape') {
+			closeSearch();
+			closeMenu();
+		}
+	});
+
+	// Header elevation
+	const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 10);
+	onScroll();
+	window.addEventListener('scroll', onScroll, { passive: true });
+</script>

@@ -1,0 +1,398 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Icon from '../../components/Icon.astro';
+import { products, categoryLabels, categoryDescriptions, type Category } from '../../data/products';
+
+const categories = Object.keys(categoryLabels) as Category[];
+
+const filters = [
+	{ key: 'all', label: 'Tümü', count: products.length },
+	...categories.map((key) => ({
+		key,
+		label: categoryLabels[key],
+		count: products.filter((product) => product.category === key).length,
+	})),
+];
+
+const sorted = [...products].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
+---
+
+<BaseLayout
+	title="Koleksiyon"
+	description="Normal plakalar, app plakalar, motosiklet ölçüleri ve numaralı koleksiyon serileri. Plaka Atelier koleksiyonunun tamamını keşfedin."
+>
+	<PageHero
+		eyebrow="Koleksiyon 2026"
+		title={`Her araca <span class="serif">bir imza.</span>`}
+		lead="On iki parçalık koleksiyon; fırçalanmış alüminyum, mat karbon ve gerçek altın varak yüzeylerle üretildi. Hepsi atölyemizde elden geçer."
+		crumbs={[{ label: 'Ana Sayfa', href: '/' }, { label: 'Plakalar' }]}
+	>
+		<aside slot="aside">
+			<span class="collection-meta">
+				<strong>{products.length}</strong>
+				<span>parça · sınırlı stok</span>
+			</span>
+			<span class="collection-meta collection-meta--muted">
+				<Icon name="truck" size={13} />
+				<span>81 ile sigortalı kargo</span>
+			</span>
+		</aside>
+	</PageHero>
+
+	<section class="section section--flush-top collection-page">
+		<div class="container">
+			<div class="collection-bar">
+				<div class="collection-filters" role="group" aria-label="Kategori filtresi">
+					{filters.map((filter) => (
+						<button
+							class={`chip ${filter.key === 'all' ? 'is-active' : ''}`}
+							type="button"
+							data-filter={filter.key}
+							aria-pressed={filter.key === 'all' ? 'true' : 'false'}
+						>
+							{filter.label}
+							<span class="chip__count">{filter.count}</span>
+						</button>
+					))}
+				</div>
+
+				<div class="collection-sort">
+					<label class="micro" for="sort">Sırala</label>
+					<select class="select collection-sort__select" id="sort" data-sort>
+						<option value="featured">Öne çıkanlar</option>
+						<option value="price-asc">Fiyat: Artan</option>
+						<option value="price-desc">Fiyat: Azalan</option>
+						<option value="name">İsme göre</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="collection-active" data-active-note hidden>
+				<span class="micro">Aktif filtre</span>
+				<span data-active-label></span>
+				<button class="collection-active__clear" type="button" data-clear-filter>
+					<Icon name="close" size={12} stroke={1.8} />
+					Temizle
+				</button>
+			</div>
+
+			<h2 class="sr-only">Plaka koleksiyonu</h2>
+
+			<div class="product-grid product-grid--page" data-grid>
+				{sorted.map((product, index) => (
+					<div
+						class="grid-item"
+						data-category={product.category}
+						data-price={product.price}
+						data-name={product.name}
+					>
+						<ProductCard product={product} index={index} />
+					</div>
+				))}
+			</div>
+
+			<div class="empty-state collection-empty" data-empty hidden>
+				<span class="empty-state__icon"><Icon name="filter" size={26} stroke={1.3} /></span>
+				<h2>Bu kategoride parça yok</h2>
+				<p>Seçtiğiniz filtreye uygun ürün bulunamadı. Koleksiyonun tamamına göz atabilirsiniz.</p>
+				<button class="btn btn--gold" type="button" data-clear-filter>
+					Tümünü göster
+					<Icon name="arrow-right" size={14} />
+				</button>
+			</div>
+
+			<div class="collection-foot">
+				<div class="collection-foot__copy">
+					<span class="eyebrow">Emin değil misiniz?</span>
+					<h2 class="h3">Kendi <span class="serif">kombinasyonunuzu</span> oluşturun.</h2>
+					<p>
+						Şehir kodu, harf ve rakam grubunu seçin; yüzeyi belirleyin. Atölyemiz gerisini
+						tamamlasın.
+					</p>
+				</div>
+				<a class="btn btn--outline" href="/#tasarim">
+					Tasarım stüdyosu
+					<Icon name="arrow-up-right" size={14} />
+				</a>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.collection-meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 9px;
+		font-size: 11px;
+		color: var(--text-muted);
+	}
+
+	.collection-meta strong {
+		font-family: var(--font-display);
+		font-size: 22px;
+		font-weight: 500;
+		letter-spacing: -0.04em;
+		color: var(--text);
+	}
+
+	.collection-meta--muted {
+		color: var(--text-dim);
+	}
+
+	.collection-meta--muted .icon {
+		color: var(--gold);
+	}
+
+	.collection-page {
+		padding-top: 0;
+	}
+
+	.collection-bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding-bottom: 18px;
+		margin-bottom: 22px;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.collection-filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 7px;
+	}
+
+	.chip__count {
+		display: inline-grid;
+		place-items: center;
+		min-width: 19px;
+		height: 19px;
+		padding: 0 5px;
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.07);
+		font-size: 9px;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.chip.is-active .chip__count {
+		background: rgba(7, 8, 10, 0.14);
+	}
+
+	.collection-sort {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		flex: 0 0 auto;
+	}
+
+	.collection-sort__select {
+		min-height: 40px;
+		padding: 8px 38px 8px 14px;
+		font-size: 11.5px;
+		background-color: rgba(255, 255, 255, 0.03);
+	}
+
+	.collection-active {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 11px 15px;
+		margin-bottom: 20px;
+		border: 1px solid var(--line);
+		border-radius: 10px;
+		background: rgba(201, 168, 106, 0.05);
+		font-size: 12px;
+		color: var(--text-muted);
+	}
+
+	.collection-active[hidden] {
+		display: none;
+	}
+
+	.collection-active__clear {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		margin-left: auto;
+		font-size: 9.5px;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--gold);
+		transition: color 0.25s;
+	}
+
+	.collection-active__clear:hover {
+		color: var(--gold-bright);
+	}
+
+	.product-grid--page {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 18px;
+	}
+
+	.grid-item {
+		display: flex;
+	}
+
+	.grid-item :global(.product-card) {
+		width: 100%;
+	}
+
+	.grid-item.is-hidden {
+		display: none;
+	}
+
+	.collection-empty {
+		margin-top: 10px;
+	}
+
+	.collection-empty[hidden] {
+		display: none;
+	}
+
+	.collection-foot {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 40px;
+		padding-top: clamp(34px, 4vw, 54px);
+		margin-top: clamp(44px, 5vw, 72px);
+		border-top: 1px solid var(--line);
+	}
+
+	.collection-foot__copy {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 14px;
+		max-width: 520px;
+	}
+
+	.collection-foot__copy p {
+		font-size: 12.5px;
+		line-height: 1.75;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 980px) {
+		.product-grid--page {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 760px) {
+		.collection-bar {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 16px;
+		}
+		.collection-sort {
+			width: 100%;
+			justify-content: space-between;
+		}
+		.collection-sort__select {
+			flex: 1;
+		}
+		.collection-foot {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.product-grid--page {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script>
+	import { categoryLabels, type Category } from '../../data/products';
+
+	const grid = document.querySelector<HTMLElement>('[data-grid]');
+	const items = Array.from(document.querySelectorAll<HTMLElement>('[data-grid] > .grid-item'));
+	const filterButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+	const clearButtons = Array.from(document.querySelectorAll<HTMLElement>('[data-clear-filter]'));
+	const activeNote = document.querySelector<HTMLElement>('[data-active-note]');
+	const activeLabel = document.querySelector<HTMLElement>('[data-active-label]');
+	const empty = document.querySelector<HTMLElement>('[data-empty]');
+	const sortSelect = document.querySelector<HTMLSelectElement>('[data-sort]');
+
+	let activeFilter = 'all';
+
+	const validFilters = ['all', ...Object.keys(categoryLabels)];
+
+	const readParam = (): string => {
+		const params = new URLSearchParams(window.location.search);
+		const value = params.get('kategori') ?? params.get('category') ?? 'all';
+		return validFilters.includes(value) ? value : 'all';
+	};
+
+	const writeParam = (value: string): void => {
+		const url = new URL(window.location.href);
+		if (value === 'all') url.searchParams.delete('kategori');
+		else url.searchParams.set('kategori', value);
+		window.history.replaceState({}, '', url);
+	};
+
+	const applyFilter = (value: string, syncUrl = true): void => {
+		activeFilter = value;
+		let visible = 0;
+
+		items.forEach((item) => {
+			const match = value === 'all' || item.dataset.category === value;
+			item.classList.toggle('is-hidden', !match);
+			if (match) visible += 1;
+		});
+
+		filterButtons.forEach((button) => {
+			const isActive = button.dataset.filter === value;
+			button.classList.toggle('is-active', isActive);
+			button.setAttribute('aria-pressed', String(isActive));
+		});
+
+		if (activeNote) activeNote.hidden = value === 'all';
+		if (activeLabel) activeLabel.textContent = categoryLabels[value as Category] ?? '';
+		if (empty) empty.hidden = visible > 0;
+		if (syncUrl) writeParam(value);
+	};
+
+	const applySort = (mode: string): void => {
+		if (!grid) return;
+		const sorted = [...items].sort((a, b) => {
+			switch (mode) {
+				case 'price-asc':
+					return Number(a.dataset.price) - Number(b.dataset.price);
+				case 'price-desc':
+					return Number(b.dataset.price) - Number(a.dataset.price);
+				case 'name':
+					return (a.dataset.name ?? '').localeCompare(b.dataset.name ?? '', 'tr');
+				default:
+					return items.indexOf(a) - items.indexOf(b);
+			}
+		});
+		sorted.forEach((item) => grid.append(item));
+	};
+
+	filterButtons.forEach((button) => {
+		button.addEventListener('click', () => applyFilter(button.dataset.filter ?? 'all'));
+	});
+
+	clearButtons.forEach((button) => {
+		button.addEventListener('click', () => applyFilter('all'));
+	});
+
+	sortSelect?.addEventListener('change', () => applySort(sortSelect.value));
+
+	applyFilter(readParam(), false);
+
+	if (typeof history !== 'undefined') {
+		window.addEventListener('popstate', () => applyFilter(readParam(), false));
+	}
+</script>

@@ -1,0 +1,436 @@
+---
+import type { PlateSize, PlateVariant } from '../data/products';
+
+interface Props {
+	text: string;
+	city?: string;
+	variant?: PlateVariant;
+	size?: PlateSize;
+	class?: string;
+	screws?: boolean;
+}
+
+const {
+	text,
+	city = '34',
+	variant = 'tr',
+	size = 'standart',
+	class: className = '',
+	screws = true,
+} = Astro.props;
+
+const bandLabels: Record<PlateVariant, string> = {
+	tr: 'TR',
+	app: 'TR',
+	black: 'TR',
+	gold: 'TR',
+	bone: 'TR',
+	green: 'EU',
+	fr: 'F',
+	de: 'D',
+	red: 'TR',
+};
+
+const stars = Array.from({ length: 12 }, (_, index) => {
+	const angle = (index / 12) * Math.PI * 2 - Math.PI / 2;
+	return {
+		x: (8 + Math.cos(angle) * 5.1).toFixed(2),
+		y: (8 + Math.sin(angle) * 5.1).toFixed(2),
+	};
+});
+---
+
+<div
+	class={`plate plate--${variant} plate--${size} ${className}`}
+	role="img"
+	aria-label={`${city} ${text} plaka görseli`}
+>
+	<div class="plate__inner">
+		<span class="plate__band">
+			<span class="plate__band-code">{bandLabels[variant]}</span>
+			{
+				['tr', 'app', 'black', 'gold', 'bone', 'red'].includes(variant) ? (
+					<svg class="plate__emblem" viewBox="0 0 24 24" aria-hidden="true">
+						<path
+							d="M14.8 3.1a9.1 9.1 0 1 0 5.7 15.9 7.9 7.9 0 0 1-5.7-15.9Z"
+							fill="currentColor"
+						/>
+						<path
+							d="m19.3 7.4.8 2.2 2.3.1-1.8 1.5.6 2.3-1.9-1.3-1.9 1.3.6-2.3-1.8-1.5 2.3-.1.8-2.2Z"
+							fill="currentColor"
+						/>
+					</svg>
+				) : (
+					<svg class="plate__emblem plate__emblem--stars" viewBox="0 0 16 16" aria-hidden="true">
+						{stars.map((star) => <circle cx={star.x} cy={star.y} r="0.72" fill="currentColor" />)}
+					</svg>
+				)
+			}
+		</span>
+
+		<span class="plate__surface">
+			<span class="plate__text">
+				<span class="plate__city">{city}</span>
+				<span class="plate__letters">{text}</span>
+			</span>
+		</span>
+
+		{
+			screws && (
+				<>
+					<span class="plate__screw plate__screw--tl" aria-hidden="true" />
+					<span class="plate__screw plate__screw--br" aria-hidden="true" />
+				</>
+			)
+		}
+	</div>
+	<span class="plate__gloss" aria-hidden="true" />
+</div>
+
+<style>
+	.plate {
+		--plate-bg: #f3f1ea;
+		--plate-ink: #111318;
+		--plate-band: #123a86;
+		--plate-band-ink: #f8f7f2;
+		--plate-frame: #c9cdd3;
+		--plate-edge: rgba(255, 255, 255, 0.7);
+		--plate-shadow: rgba(0, 0, 0, 0.38);
+
+		position: relative;
+		width: 100%;
+		aspect-ratio: 520 / 110;
+		container-type: inline-size;
+		border-radius: 2.1cqw;
+		background: var(--plate-bg);
+		box-shadow:
+			0 1px 0 var(--plate-edge) inset,
+			0 -1px 0 rgba(0, 0, 0, 0.18) inset,
+			0 0 0 1px var(--plate-frame),
+			0 18px 40px -18px var(--plate-shadow),
+			0 44px 80px -44px var(--plate-shadow);
+		isolation: isolate;
+		transform: translateZ(0);
+	}
+
+	.plate__inner {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		overflow: hidden;
+		border-radius: inherit;
+		background:
+			linear-gradient(112deg, rgba(255, 255, 255, 0.42), transparent 32%, transparent 70%, rgba(0, 0, 0, 0.08)),
+			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 4px),
+			var(--plate-bg);
+	}
+
+	.plate__inner::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+		opacity: 0.06;
+		mix-blend-mode: overlay;
+		pointer-events: none;
+	}
+
+	.plate__band {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 2.4cqw;
+		width: 13.5%;
+		flex: 0 0 13.5%;
+		height: 100%;
+		padding: 1.2cqw 0;
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 28%),
+			linear-gradient(135deg, rgba(0, 0, 0, 0.16), transparent 56%),
+			var(--plate-band);
+		color: var(--plate-band-ink);
+		border-right: 0.35cqw solid rgba(255, 255, 255, 0.22);
+		box-shadow: inset -0.6cqw 0 1.4cqw rgba(0, 0, 0, 0.16);
+	}
+
+	.plate__band-code {
+		font-family: 'Sora Variable', 'Arial Narrow', sans-serif;
+		font-size: 4.3cqw;
+		font-weight: 650;
+		letter-spacing: 0.06em;
+		line-height: 1;
+	}
+
+	.plate__emblem {
+		width: 5.4cqw;
+		height: 5.4cqw;
+		opacity: 0.96;
+	}
+
+	.plate__emblem--stars {
+		width: 4.8cqw;
+		height: 4.8cqw;
+	}
+
+	.plate__surface {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+		padding: 0 4.5cqw;
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.26), transparent 24%),
+			linear-gradient(0deg, rgba(0, 0, 0, 0.05), transparent 24%);
+	}
+
+	.plate__text {
+		display: flex;
+		align-items: baseline;
+		justify-content: center;
+		gap: 2.7cqw;
+		color: var(--plate-ink);
+		font-family: 'Sora Variable', 'Arial Narrow', 'Segoe UI', sans-serif;
+		font-size: 14.6cqw;
+		font-weight: 700;
+		letter-spacing: 0.015em;
+		line-height: 1;
+		transform: translateY(-0.4cqw);
+		text-shadow:
+			0 0.22cqw 0 rgba(255, 255, 255, 0.55),
+			0 -0.22cqw 0.1cqw rgba(0, 0, 0, 0.22);
+		white-space: nowrap;
+	}
+
+	.plate__city {
+		font-size: 0.84em;
+		font-weight: 650;
+	}
+
+	.plate__letters {
+		font-weight: 720;
+	}
+
+	.plate__screw {
+		position: absolute;
+		z-index: 3;
+		width: 1.7cqw;
+		height: 1.7cqw;
+		border-radius: 50%;
+		background: radial-gradient(circle at 32% 28%, #fafafa, #c3c7cc 42%, #6b7078 72%, #33373d);
+		box-shadow:
+			0 0 0 0.25cqw rgba(0, 0, 0, 0.12),
+			0 0.2cqw 0.5cqw rgba(0, 0, 0, 0.3),
+			0 0.05cqw 0 rgba(255, 255, 255, 0.8) inset;
+	}
+
+	.plate__screw::after {
+		content: '';
+		position: absolute;
+		top: 45%;
+		left: 18%;
+		width: 64%;
+		height: 0.22cqw;
+		background: rgba(0, 0, 0, 0.4);
+		transform: rotate(-24deg);
+		border-radius: 1px;
+	}
+
+	.plate__screw--tl {
+		top: 5%;
+		left: 5%;
+	}
+
+	.plate__screw--br {
+		right: 4%;
+		bottom: 5%;
+	}
+
+	.plate__gloss {
+		position: absolute;
+		z-index: 4;
+		inset: 0;
+		border-radius: inherit;
+		background: linear-gradient(
+			116deg,
+			transparent 30%,
+			rgba(255, 255, 255, 0.36) 44%,
+			rgba(255, 255, 255, 0.06) 51%,
+			transparent 58%
+		);
+		transform: translateX(-118%);
+		transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+		pointer-events: none;
+		mix-blend-mode: screen;
+	}
+
+	:global(.plate-stage:hover) .plate__gloss,
+	:global(.product-card:hover) .plate__gloss,
+	.plate:hover .plate__gloss {
+		transform: translateX(118%);
+	}
+
+	/* Variants */
+	.plate--app {
+		--plate-bg: #0b0c0f;
+		--plate-ink: #f6f5f0;
+		--plate-band: #12151a;
+		--plate-band-ink: #f6f5f0;
+		--plate-frame: rgba(255, 255, 255, 0.22);
+		--plate-edge: rgba(255, 255, 255, 0.12);
+		--plate-shadow: rgba(0, 0, 0, 0.75);
+	}
+
+	.plate--app .plate__inner {
+		background:
+			linear-gradient(112deg, rgba(255, 255, 255, 0.16), transparent 36%, transparent 72%, rgba(255, 255, 255, 0.04)),
+			repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 4px),
+			var(--plate-bg);
+	}
+
+	.plate--app .plate__text,
+	.plate--black .plate__text,
+	.plate--gold .plate__text,
+	.plate--red .plate__text {
+		text-shadow:
+			0 0.22cqw 0 rgba(255, 255, 255, 0.16),
+			0 -0.22cqw 0.2cqw rgba(0, 0, 0, 0.7);
+	}
+
+	.plate--app .plate__surface {
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), transparent 28%);
+	}
+
+	.plate--black {
+		--plate-bg: #0b0b0c;
+		--plate-ink: #d9bd8a;
+		--plate-band: #d9bd8a;
+		--plate-band-ink: #0b0b0c;
+		--plate-frame: rgba(217, 189, 138, 0.55);
+		--plate-shadow: rgba(0, 0, 0, 0.8);
+	}
+
+	.plate--black .plate__inner {
+		background:
+			radial-gradient(120% 200% at 12% 0%, rgba(217, 189, 138, 0.18), transparent 40%),
+			linear-gradient(112deg, rgba(255, 255, 255, 0.12), transparent 40%),
+			var(--plate-bg);
+	}
+
+	.plate--gold {
+		--plate-bg: #0c0d0e;
+		--plate-ink: #e2c795;
+		--plate-band: linear-gradient(180deg, #d8bc85, #9a783f);
+		--plate-band-ink: #1b150c;
+		--plate-frame: rgba(225, 197, 143, 0.78);
+		--plate-shadow: rgba(0, 0, 0, 0.8);
+	}
+
+	.plate--gold .plate__inner {
+		background:
+			radial-gradient(150% 220% at 20% -20%, rgba(225, 197, 143, 0.28), transparent 44%),
+			linear-gradient(112deg, rgba(255, 255, 255, 0.14), transparent 40%),
+			#0c0d0e;
+	}
+
+	.plate--gold .plate__band {
+		box-shadow: inset -0.6cqw 0 1.4cqw rgba(0, 0, 0, 0.35);
+	}
+
+	.plate--bone {
+		--plate-bg: #e9e2d3;
+		--plate-ink: #16130e;
+		--plate-band: linear-gradient(180deg, #c3a26b, #967640);
+		--plate-band-ink: #fffaf0;
+		--plate-frame: rgba(143, 118, 74, 0.55);
+		--plate-shadow: rgba(45, 34, 18, 0.35);
+	}
+
+	.plate--green {
+		--plate-bg: #f1f3ee;
+		--plate-ink: #102018;
+		--plate-band: #1d6b4c;
+		--plate-frame: #b9c3b7;
+	}
+
+	.plate--fr {
+		--plate-bg: #f4f3ee;
+		--plate-ink: #10131a;
+		--plate-band: #17367c;
+	}
+
+	.plate--de {
+		--plate-bg: #f5f4ef;
+		--plate-ink: #0e1116;
+		--plate-band: #1c355f;
+	}
+
+	.plate--red {
+		--plate-bg: #3c0d14;
+		--plate-ink: #ece2d2;
+		--plate-band: #16171a;
+		--plate-band-ink: #ece2d2;
+		--plate-frame: rgba(236, 226, 210, 0.35);
+		--plate-shadow: rgba(0, 0, 0, 0.75);
+	}
+
+	.plate--red .plate__inner {
+		background:
+			radial-gradient(140% 220% at 16% -20%, rgba(255, 255, 255, 0.16), transparent 42%),
+			linear-gradient(112deg, rgba(255, 255, 255, 0.12), transparent 44%),
+			var(--plate-bg);
+	}
+
+	/* Sizes */
+	.plate--kare {
+		aspect-ratio: 340 / 230;
+	}
+
+	.plate--kare .plate__text,
+	.plate--motosiklet .plate__text {
+		flex-direction: column;
+		align-items: center;
+		gap: 2.2cqw;
+		font-size: 17cqw;
+		transform: translateY(-0.6cqw);
+	}
+
+	.plate--kare .plate__city,
+	.plate--motosiklet .plate__city {
+		font-size: 0.56em;
+		letter-spacing: 0.12em;
+	}
+
+	.plate--motosiklet {
+		aspect-ratio: 260 / 210;
+	}
+
+	.plate--motosiklet .plate__text {
+		font-size: 19cqw;
+	}
+
+	.plate--uzun {
+		aspect-ratio: 600 / 108;
+	}
+
+	.plate--uzun .plate__text {
+		font-size: 13.6cqw;
+	}
+
+	.plate--kare .plate__band,
+	.plate--motosiklet .plate__band {
+		width: 16%;
+		flex-basis: 16%;
+	}
+
+	@media (max-width: 520px) {
+		.plate__text {
+			font-size: 14cqw;
+		}
+	}
+</style>

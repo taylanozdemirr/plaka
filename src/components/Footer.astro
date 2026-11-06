@@ -1,0 +1,163 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import PhoneCta from './PhoneCta.astro';
+import { site, telHref, tracking, whatsappHref } from '../data/site';
+
+const trackingEnabled = Boolean(tracking.googleAdsId.trim() || tracking.ga4Id.trim());
+
+const year = new Date().getFullYear();
+
+const explore = [
+	{ label: 'Normal Plakalar', href: '/plakalar?kategori=normal' },
+	{ label: 'App Plakalar', href: '/plakalar?kategori=app' },
+	{ label: 'Koleksiyon Serisi', href: '/plakalar?kategori=koleksiyon' },
+	{ label: 'Motosiklet Plakaları', href: '/plakalar?kategori=motosiklet' },
+	{ label: 'Tüm Koleksiyon', href: '/plakalar' },
+];
+
+const corporate = [
+	{ label: 'Atölyemiz', href: '/hakkimizda' },
+	{ label: 'Tasarım Stüdyosu', href: '/#tasarim' },
+	{ label: 'Sıkça Sorulan Sorular', href: '/sss' },
+	{ label: 'İletişim', href: '/iletisim' },
+];
+
+const legal = [
+	{ label: 'Gizlilik Politikası', href: '/bilgi/gizlilik-politikasi' },
+	{ label: 'Mesafeli Satış Sözleşmesi', href: '/bilgi/mesafeli-satis-sozlesmesi' },
+	{ label: 'Kargo ve Teslimat', href: '/bilgi/kargo-ve-teslimat' },
+	{ label: 'İade ve Değişim', href: '/bilgi/iade-ve-degisim' },
+];
+---
+
+<footer class="site-footer">
+	<div class="container">
+		<div class="footer-call">
+			<div class="footer-call__copy">
+				<span class="eyebrow">Telefonla sipariş</span>
+				<h2 class="serif">Plakanız bir <br />telefon uzağınızda.</h2>
+				<p>
+					Siparişlerimizi yalnızca telefonla alıyoruz. Arayın; ölçüyü, yüzeyi ve
+					karakterleri birlikte seçelim. Atölyemizde hazırlanan plakanız Türkiye’nin
+					81 iline sigortalı kargo ile kapınıza gelsin.
+				</p>
+			</div>
+			<PhoneCta variant="compact" eyebrow="Sipariş hattı" />
+		</div>
+
+		<div class="site-footer__main">
+			<div class="site-footer__brand">
+				<Logo />
+				<p>
+					Müze kalitesinde işçilikle üretilen plakalar. Atölyemizde her parça elden geçer,
+					her sipariş numaralı bir imza taşır ve Türkiye’nin dört bir yanına gönderilir.
+				</p>
+				<div class="socials">
+					<a class="social-link" href={site.instagram} aria-label="Instagram" target="_blank" rel="noopener">
+						<Icon name="instagram" size={16} />
+					</a>
+					<a class="social-link" href={whatsappHref()} aria-label="WhatsApp" target="_blank" rel="noopener">
+						<Icon name="whatsapp" size={16} />
+					</a>
+					<a class="social-link" href={telHref} aria-label="Telefon">
+						<Icon name="phone" size={16} />
+					</a>
+				</div>
+			</div>
+
+			<div class="site-footer__col">
+				<span class="site-footer__col-title">Keşfet</span>
+				{explore.map((link) => (
+					<a class="site-footer__link" href={link.href}>{link.label}</a>
+				))}
+			</div>
+
+			<div class="site-footer__col">
+				<span class="site-footer__col-title">Atölye</span>
+				{corporate.map((link) => (
+					<a class="site-footer__link" href={link.href}>{link.label}</a>
+				))}
+			</div>
+
+			<div class="site-footer__col">
+				<span class="site-footer__col-title">Sipariş hattı</span>
+				<div class="site-footer__contact">
+					<a class="site-footer__phone" href={telHref}>
+						<Icon name="phone" size={14} />
+						<span>{site.phone}</span>
+					</a>
+					<a href={whatsappHref()} target="_blank" rel="noopener">
+						<Icon name="whatsapp" size={14} />
+						<span>WhatsApp’tan yazın</span>
+					</a>
+					<span>
+						<Icon name="clock" size={14} />
+						<span>{site.hours}</span>
+					</span>
+					<span>
+						<Icon name="truck" size={14} />
+						<span>Türkiye’nin 81 iline sigortalı kargo</span>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="site-footer__bottom">
+			<span>© {year} {site.name}. Tüm hakları saklıdır.</span>
+			<div class="site-footer__legal">
+				{legal.map((link) => (
+					<a href={link.href}>{link.label}</a>
+				))}
+				{trackingEnabled && (
+					<a href="#" data-consent-settings>Çerez tercihleri</a>
+				)}
+			</div>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.footer-call {
+		display: grid;
+		grid-template-columns: 1fr minmax(0, 520px);
+		align-items: center;
+		gap: clamp(32px, 6vw, 96px);
+		padding: clamp(56px, 7vw, 100px) 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.footer-call__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.footer-call__copy h2 {
+		font-size: clamp(2.2rem, 4.6vw, 3.9rem);
+		font-weight: 400;
+		line-height: 1.02;
+		letter-spacing: -0.02em;
+	}
+
+	.footer-call__copy p {
+		max-width: 48ch;
+		font-size: 13px;
+		line-height: 1.8;
+		color: var(--text-muted);
+	}
+
+	.site-footer__phone span {
+		font-family: var(--font-display);
+		font-size: 15px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		color: var(--gold-bright);
+	}
+
+	@media (max-width: 900px) {
+		.footer-call {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

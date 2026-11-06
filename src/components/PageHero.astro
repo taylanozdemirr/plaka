@@ -1,0 +1,78 @@
+---
+import Icon from './Icon.astro';
+
+interface Crumb {
+	label: string;
+	href?: string;
+}
+
+interface Props {
+	eyebrow?: string;
+	title: string;
+	lead?: string;
+	crumbs?: Crumb[];
+	align?: 'split' | 'center';
+	class?: string;
+}
+
+const { eyebrow, title, lead, crumbs = [], align = 'split', class: className = '' } = Astro.props;
+---
+
+<section class={`page-hero ${className}`}>
+	<div class="container page-hero__inner">
+		<div class="page-hero__main">
+			{
+				crumbs.length > 0 && (
+					<nav class="breadcrumb" aria-label="Sayfa yolu">
+						{crumbs.map((crumb, index) => (
+							<>
+								{index > 0 && (
+									<span class="breadcrumb__sep" aria-hidden="true">
+										/
+									</span>
+								)}
+								{crumb.href ? (
+									<a href={crumb.href}>{crumb.label}</a>
+								) : (
+									<span aria-current="page">{crumb.label}</span>
+								)}
+							</>
+						))}
+					</nav>
+				)
+			}
+			{eyebrow && <span class="eyebrow reveal">{eyebrow}</span>}
+			<h1 class="page-hero__title reveal" style="--delay:0.06s" set:html={title} />
+			{lead && (
+				<p class="lead reveal" style="--delay:0.12s">
+					{lead}
+				</p>
+			)}
+		</div>
+		{
+			Astro.slots.has('aside') && (
+				<div class="page-hero__aside reveal" style="--delay:0.18s">
+					<slot name="aside" />
+				</div>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.page-hero__title {
+		font-size: clamp(2.9rem, 5.8vw, 5.6rem);
+		line-height: 0.98;
+		letter-spacing: -0.058em;
+		font-weight: 420;
+	}
+
+	.page-hero__title :global(.serif) {
+		color: var(--gold-bright);
+		font-size: 1.06em;
+	}
+
+	.page-hero__inner {
+		align-items: flex-end;
+	}
+</style>

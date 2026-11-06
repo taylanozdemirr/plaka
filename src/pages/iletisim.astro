@@ -1,0 +1,471 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PhoneCta from '../components/PhoneCta.astro';
+import Icon from '../components/Icon.astro';
+import { site, telHref, whatsappHref } from '../data/site';
+
+const channels = [
+	{
+		icon: 'phone',
+		label: 'Telefon',
+		value: site.phone,
+		href: telHref,
+		note: 'Sipariş ve bilgi hattı',
+	},
+	{
+		icon: 'whatsapp',
+		label: 'WhatsApp',
+		value: site.phone,
+		href: whatsappHref(),
+		note: 'Fotoğraf ve tasarım paylaşın',
+	},
+	{
+		icon: 'instagram',
+		label: 'Instagram',
+		value: 'Bizi takip edin',
+		href: site.instagram,
+		note: 'Yeni koleksiyonlar ve atölyeden kareler',
+	},
+];
+
+const talkingPoints = [
+	'Plaka tipi ve aracınıza uygun ölçü',
+	'Yüzey, renk ve karakter seçimi',
+	'Kesin fiyat ve üretim süresi',
+	'Teslimat adresi ve kargo takibi',
+];
+
+const coverage = [
+	{ value: '81', label: 'ile gönderim' },
+	{ value: '1–3', label: 'iş günü teslimat' },
+	{ value: '%100', label: 'sigortalı kargo' },
+];
+---
+
+<BaseLayout
+	title="İletişim"
+	description="Plaka Atelier sipariş hattı. Plaka siparişi için bizi arayın veya WhatsApp’tan yazın; Türkiye’nin 81 iline sigortalı kargo ile gönderiyoruz."
+>
+	<PageHero
+		eyebrow="İletişim"
+		title={`Atölyeye <span class="serif">bir telefon</span> uzağınızdayız.`}
+		lead="Siparişlerimizi telefonla alıyoruz. Arayın; aklınızdaki plakayı anlatın, ölçüden yüzeye her detayı birlikte netleştirelim."
+		crumbs={[{ label: 'Ana Sayfa', href: '/' }, { label: 'İletişim' }]}
+	>
+		<div slot="aside" class="contact-hero__status">
+			<span class="contact-hero__dot" aria-hidden="true"></span>
+			<div>
+				<strong>Sipariş hattı</strong>
+				<span>{site.hours}</span>
+			</div>
+		</div>
+	</PageHero>
+
+	<section class="contact">
+		<div class="container">
+			<div class="contact__grid">
+				<div class="contact__main reveal">
+					<PhoneCta
+						title={`Sipariş için <span class="serif">arayın.</span>`}
+						lead="Telefonu atölye ekibimiz açar. Koleksiyondan bir parça ya da tamamen size özel bir tasarım; hepsini tek bir görüşmede planlayalım."
+					/>
+				</div>
+
+				<aside class="contact__side">
+					<div class="contact-card reveal" style="--delay:0.06s">
+						<span class="eyebrow eyebrow--plain">Görüşmede neler konuşuruz</span>
+						<ul class="contact-points">
+							{talkingPoints.map((point) => (
+								<li>
+									<Icon name="check" size={13} stroke={2} />
+									<span>{point}</span>
+								</li>
+							))}
+						</ul>
+					</div>
+
+					<div class="contact-card contact-card--muted reveal" style="--delay:0.12s">
+						<span class="eyebrow eyebrow--plain">Çalışma saatleri</span>
+						<div class="contact-card__hours">
+							<div>
+								<span class="micro">Pazartesi – Cumartesi</span>
+								<strong>10:00 – 19:00</strong>
+							</div>
+							<div>
+								<span class="micro">Pazar</span>
+								<strong>WhatsApp’tan yazın</strong>
+							</div>
+						</div>
+					</div>
+				</aside>
+			</div>
+
+			<div class="contact__channels">
+				{channels.map((channel, index) => (
+					<a
+						class="channel reveal"
+						style={`--delay:${index * 0.06}s`}
+						href={channel.href}
+						target={channel.href.startsWith('http') ? '_blank' : undefined}
+						rel={channel.href.startsWith('http') ? 'noopener' : undefined}
+					>
+						<span class="channel__icon"><Icon name={channel.icon} size={18} stroke={1.4} /></span>
+						<span class="channel__body">
+							<span class="micro">{channel.label}</span>
+							<strong>{channel.value}</strong>
+							<span class="channel__note">{channel.note}</span>
+						</span>
+						<Icon name="arrow-up-right" size={14} class="channel__arrow" />
+					</a>
+				))}
+			</div>
+
+			<div class="coverage reveal">
+				<div class="coverage__copy">
+					<span class="eyebrow">Türkiye geneli</span>
+					<h2 class="h3">Edirne’den Hakkâri’ye, <span class="serif">her kapıya.</span></h2>
+					<p>
+						Atölyemizde hazırlanan her plaka, çift katmanlı koruyucu ambalajı ve montaj
+						setiyle Türkiye’nin 81 iline sigortalı kargo ile gönderilir. Kargo takip
+						numaranızı size telefonla veya WhatsApp’tan iletiyoruz.
+					</p>
+				</div>
+				<dl class="coverage__stats">
+					{coverage.map((item) => (
+						<div>
+							<dt>{item.value}</dt>
+							<dd>{item.label}</dd>
+						</div>
+					))}
+				</dl>
+			</div>
+
+			<div class="contact-fast reveal">
+				<a href="/sss">
+					<Icon name="info" size={16} />
+					<span><strong>Sıkça sorulanlar</strong> Malzeme, ölçü ve üretim süreleri</span>
+					<Icon name="arrow-right" size={14} />
+				</a>
+				<a href="/bilgi/kargo-ve-teslimat">
+					<Icon name="package" size={16} />
+					<span><strong>Kargo ve teslimat</strong> Hazırlık ve teslim süreleri</span>
+					<Icon name="arrow-right" size={14} />
+				</a>
+				<a href="/bilgi/iade-ve-degisim">
+					<Icon name="refresh" size={16} />
+					<span><strong>İade ve değişim</strong> 14 gün içinde kolay süreç</span>
+					<Icon name="arrow-right" size={14} />
+				</a>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.contact-hero__status {
+		display: flex;
+		align-items: center;
+		gap: 11px;
+		padding: 12px 16px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.025);
+	}
+
+	.contact-hero__dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--green);
+		box-shadow: 0 0 0 4px rgba(78, 158, 120, 0.16);
+	}
+
+	.contact-hero__status div {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.contact-hero__status strong {
+		font-size: 10.5px;
+		font-weight: 650;
+		color: var(--text-muted);
+	}
+
+	.contact-hero__status span {
+		font-size: 9px;
+		color: var(--text-dim);
+	}
+
+	.contact {
+		padding: 0 0 clamp(64px, 8vw, 110px);
+	}
+
+	.contact__grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+		gap: 18px;
+		align-items: stretch;
+	}
+
+	.contact__main :global(.phone-cta) {
+		height: 100%;
+		justify-content: center;
+	}
+
+	.contact__side {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.contact-card {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		padding: clamp(20px, 2.4vw, 28px);
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		background: var(--surface);
+	}
+
+	.contact-card--muted {
+		background: rgba(255, 255, 255, 0.015);
+	}
+
+	.contact-points {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 0;
+		list-style: none;
+	}
+
+	.contact-points li {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		font-size: 12.5px;
+		line-height: 1.5;
+		color: var(--text-muted);
+	}
+
+	.contact-points .icon {
+		flex: 0 0 auto;
+		margin-top: 3px;
+		color: var(--gold);
+	}
+
+	.contact-card__hours {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.contact-card__hours div {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		padding: 11px 0;
+		border-top: 1px solid var(--line);
+	}
+
+	.contact-card__hours strong {
+		font-size: 12px;
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.contact__channels {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 12px;
+		margin-top: 18px;
+	}
+
+	.channel {
+		position: relative;
+		display: flex;
+		align-items: flex-start;
+		gap: 14px;
+		padding: 20px;
+		border: 1px solid var(--line);
+		border-radius: 16px;
+		background: rgba(255, 255, 255, 0.018);
+		transition:
+			border-color 0.3s var(--ease-soft),
+			background 0.3s var(--ease-soft),
+			transform 0.4s var(--ease);
+	}
+
+	.channel:hover {
+		border-color: rgba(201, 168, 106, 0.35);
+		background: rgba(201, 168, 106, 0.04);
+		transform: translateY(-3px);
+	}
+
+	.channel__icon {
+		flex: 0 0 auto;
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		border: 1px solid rgba(201, 168, 106, 0.28);
+		border-radius: 50%;
+		color: var(--gold-bright);
+	}
+
+	.channel__body {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		min-width: 0;
+	}
+
+	.channel__body strong {
+		font-family: var(--font-display);
+		font-size: 14px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		color: var(--text);
+	}
+
+	.channel__note {
+		font-size: 10.5px;
+		color: var(--text-dim);
+	}
+
+	.channel :global(.channel__arrow) {
+		position: absolute;
+		top: 18px;
+		right: 18px;
+		color: var(--text-dim);
+		transition: color 0.3s;
+	}
+
+	.channel:hover :global(.channel__arrow) {
+		color: var(--gold-bright);
+	}
+
+	.coverage {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+		align-items: center;
+		gap: clamp(28px, 5vw, 80px);
+		margin-top: clamp(48px, 6vw, 80px);
+		padding: clamp(28px, 4vw, 48px);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-lg);
+		background:
+			radial-gradient(600px 300px at 100% 0%, rgba(201, 168, 106, 0.1), transparent 60%),
+			linear-gradient(160deg, #0f1217, #08090c);
+	}
+
+	.coverage__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	.coverage__copy p {
+		max-width: 56ch;
+		font-size: 13px;
+		line-height: 1.8;
+		color: var(--text-muted);
+	}
+
+	.coverage__stats {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.coverage__stats div {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 18px 16px;
+		border: 1px solid var(--line);
+		border-radius: 14px;
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.coverage__stats dt {
+		font-family: var(--font-display);
+		font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+		font-weight: 550;
+		letter-spacing: -0.04em;
+		color: var(--gold-bright);
+	}
+
+	.coverage__stats dd {
+		margin: 0;
+		font-size: 10.5px;
+		color: var(--text-dim);
+	}
+
+	.contact-fast {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 12px;
+		margin-top: 18px;
+	}
+
+	.contact-fast a {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 16px 18px;
+		border: 1px solid var(--line);
+		border-radius: 14px;
+		font-size: 11px;
+		color: var(--text-dim);
+		transition:
+			border-color 0.3s,
+			color 0.3s;
+	}
+
+	.contact-fast a span {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.contact-fast a strong {
+		font-size: 12.5px;
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.contact-fast a .icon {
+		flex: 0 0 auto;
+		color: var(--gold);
+	}
+
+	.contact-fast a:hover {
+		border-color: rgba(201, 168, 106, 0.35);
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 1060px) {
+		.contact__grid,
+		.coverage {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 760px) {
+		.contact__channels,
+		.contact-fast {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.coverage__stats {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

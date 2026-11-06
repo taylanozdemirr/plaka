@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#15181f"/>
+      <stop offset="1" stop-color="#08090c"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#efdfb8"/>
+      <stop offset="0.48" stop-color="#c9a86a"/>
+      <stop offset="1" stop-color="#9a7944"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
+  <rect x="1" y="1" width="62" height="62" rx="14" fill="none" stroke="url(#gold)" stroke-opacity="0.55"/>
+  <rect x="12" y="22" width="40" height="22" rx="4" fill="none" stroke="url(#gold)" stroke-width="2.4"/>
+  <text x="32" y="39" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="15" font-weight="700" letter-spacing="1" fill="url(#gold)">PA</text>
+  <circle cx="16" cy="26" r="1.4" fill="#c9a86a"/>
+  <circle cx="48" cy="26" r="1.4" fill="#c9a86a"/>
+  <circle cx="16" cy="40" r="1.4" fill="#c9a86a"/>
+  <circle cx="48" cy="40" r="1.4" fill="#c9a86a"/>
+</svg>

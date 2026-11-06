@@ -1,0 +1,103 @@
+---
+interface Props {
+	href?: string;
+	class?: string;
+}
+const { href = '/', class: className = '' } = Astro.props;
+---
+
+<a class={`logo ${className}`} href={href}>
+	<span class="logo__mark" aria-hidden="true">
+		<span class="logo__band"></span>
+		<span class="logo__letter">P</span>
+		<span class="logo__screw"></span>
+	</span>
+	<span class="logo__type">
+		<span class="logo__word">PLAKA</span>
+		<span class="logo__sub">ATELIER · TÜRKİYE</span>
+	</span>
+</a>
+
+<style>
+	.logo {
+		display: inline-flex;
+		align-items: center;
+		gap: 11px;
+		color: var(--text);
+		text-decoration: none;
+		line-height: 1;
+	}
+
+	.logo__mark {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 47px;
+		height: 30px;
+		flex: 0 0 47px;
+		border-radius: 4px;
+		background: linear-gradient(150deg, #fbfaf6, #e6e3da);
+		border: 1px solid rgba(255, 255, 255, 0.5);
+		box-shadow:
+			0 1px 0 rgba(255, 255, 255, 0.9) inset,
+			0 6px 14px -8px rgba(0, 0, 0, 0.8);
+		color: #101216;
+		overflow: hidden;
+	}
+
+	.logo__band {
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: 9px;
+		background: #163d8b;
+	}
+
+	.logo__letter {
+		font-family: var(--font-display);
+		font-size: 16px;
+		font-weight: 700;
+		letter-spacing: -0.04em;
+		transform: translateX(4px);
+	}
+
+	.logo__screw {
+		position: absolute;
+		right: 3px;
+		top: 3px;
+		width: 3px;
+		height: 3px;
+		border-radius: 50%;
+		background: #8c9098;
+	}
+
+	.logo__type {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.logo__word {
+		font-family: var(--font-display);
+		font-size: 17px;
+		font-weight: 650;
+		letter-spacing: 0.24em;
+		line-height: 1;
+	}
+
+	.logo__sub {
+		font-size: 7.5px;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		color: var(--text-dim);
+		line-height: 1;
+	}
+
+	@media (max-width: 420px) {
+		.logo__sub {
+			font-size: 6.5px;
+		}
+		.logo__word {
+			font-size: 15px;
+		}
+	}
+</style>

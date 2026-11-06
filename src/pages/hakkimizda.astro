@@ -1,0 +1,796 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Plate from '../components/Plate.astro';
+import Icon from '../components/Icon.astro';
+import { site, telHref } from '../data/site';
+
+const stats = [
+	{ value: '12', suffix: 'yıl', label: 'Atölye deneyimi' },
+	{ value: '81', suffix: 'il', label: 'Teslimat ağı' },
+	{ value: '2', suffix: 'yıl', label: 'Üretim garantisi' },
+	{ value: '3D', suffix: '', label: 'Kabartma karakter' },
+];
+
+const steps = [
+	{
+		no: '01',
+		title: 'Seçim',
+		text: 'Koleksiyondan bir parça seçin ya da tasarım stüdyosunda kendi kombinasyonunuzu oluşturun. Ölçü, yüzey ve karakter setini birlikte netleştiriyoruz.',
+		meta: '1 iş günü',
+	},
+	{
+		no: '02',
+		title: 'Üretim',
+		text: '1.2 mm fırçalanmış alüminyum gövde lazerle kesilir, kenarları elde yumuşatılır. Karakterler üç katmanlı UV baskı ve 3D kabartma ile yüzeye işlenir.',
+		meta: '2–3 iş günü',
+	},
+	{
+		no: '03',
+		title: 'Kalite',
+		text: 'Her parça ışık altında yüzey, hizalama ve kenar kontrolünden geçer. Yalnızca imza atölye mührünü taşıyan plakalar paketlenir.',
+		meta: '1 iş günü',
+	},
+	{
+		no: '04',
+		title: 'Teslim',
+		text: 'Çift katmanlı koruyucu köpük, el dikişli sunum kutusu ve montaj setiyle sigortalı kargoya verilir. Türkiye genelinde 1–3 iş günü.',
+		meta: '48 saat',
+	},
+];
+
+const materials = [
+	{ label: 'Gövde', value: '1.2 mm fırçalanmış alüminyum' },
+	{ label: 'Yüzey', value: 'Üç katmanlı UV dayanımlı baskı' },
+	{ label: 'Karakter', value: '3D kabartma · elde hizalama' },
+	{ label: 'Montaj', value: 'Paslanmaz çelik · gizli kanal' },
+	{ label: 'Detay', value: 'İsteğe bağlı 24 ayar altın varak' },
+	{ label: 'Garanti', value: '2 yıl üretim garantisi' },
+];
+
+const values = [
+	{
+		icon: 'medal',
+		title: 'Zanaat önce gelir',
+		text: 'Seri üretim yapmıyoruz. Her plaka tek bir zanaatkârın elinden çıkar ve kendi imzasını taşır.',
+	},
+	{
+		icon: 'shield',
+		title: 'Ölçülebilir kalite',
+		text: 'Yüzey kalınlığından karakter yüksekliğine kadar her detay yazılı standarda bağlıdır.',
+	},
+	{
+		icon: 'spark',
+		title: 'Sakin lüks',
+		text: 'Gösterişten uzak, malzemenin kendisini konuşturan bir estetik. Az sayıda, doğru parça.',
+	},
+];
+---
+
+<BaseLayout
+	title="Atölye"
+	description="Plaka Atelier: 2014'ten beri plakayı bir zanaat nesnesine dönüştüren atölye. Malzeme, üretim süreci ve değerlerimiz."
+>
+	<PageHero
+		eyebrow="Atölye · Est. 2014"
+		title={`Plakaya <span class="serif">imza</span> atmak.`}
+		lead="Küçük bir atölyede başlayan bir fikir: bir plakanın da bir nesne gibi tasarlanabileceği. Bugün aynı titizlikle, sınırlı sayıda üretiyor ve Türkiye’nin dört bir yanına gönderiyoruz."
+		crumbs={[{ label: 'Ana Sayfa', href: '/' }, { label: 'Atölye' }]}
+	>
+		<div slot="aside" class="about-hero__plate plate-stage" data-tilt>
+			<Plate text="ATL 14" city="06" variant="gold" size="standart" />
+			<span class="about-hero__caption">
+				<Icon name="spark" size={11} />
+				İmza serisi · el işçiliği
+			</span>
+		</div>
+	</PageHero>
+
+	<!-- Story -->
+	<section class="section section--tight about-story">
+		<div class="container about-story__grid">
+			<div class="about-story__media reveal">
+				<figure class="about-figure">
+					<img src="/images/atelier.jpg" alt="Plaka Atelier atölyesinde çalışma tezgahı" loading="lazy" />
+					<span class="about-figure__veil" aria-hidden="true"></span>
+					<figcaption>
+						<span class="micro">Atölye · El işçiliği</span>
+						<strong>Atölye, 2014</strong>
+					</figcaption>
+				</figure>
+				<div class="about-story__badge">
+					<span class="about-story__badge-value">12</span>
+					<span class="about-story__badge-label">yıllık<br />zanaat</span>
+				</div>
+			</div>
+
+			<div class="about-story__copy reveal" style="--delay:0.1s">
+				<span class="eyebrow">Hikâye</span>
+				<h2 class="about-title">
+					Bir plaka,<br /><span class="serif">bir imza.</span>
+				</h2>
+				<p>
+					Her şey, bir otomobil tutkununun “plakam neden diğerlerinden farklı olmasın?”
+					sorusuyla başladı. O gün atölyede üretilen ilk parça, bugünkü koleksiyonun
+					ölçüsü oldu: doğru malzeme, doğru oran, doğru sessizlik.
+				</p>
+				<p>
+					Bugün atölyemizde yılda yalnızca sınırlı sayıda plaka üretiyor ve her birini
+					Türkiye’nin 81 iline gönderiyoruz. Her biri elle kesiliyor, elle hizalanıyor ve tek tek
+					kontrol ediliyor. Amacımız bir aksesuar satmak değil; aracınıza ait bir
+					nesne bırakmak.
+				</p>
+
+				<dl class="about-stats">
+					{stats.map((stat) => (
+						<div class="about-stat">
+							<dt>
+								<span class="about-stat__value">{stat.value}</span>
+								<span class="about-stat__suffix">{stat.suffix}</span>
+							</dt>
+							<dd>{stat.label}</dd>
+						</div>
+					))}
+				</dl>
+			</div>
+		</div>
+	</section>
+
+	<!-- Process -->
+	<section class="section process">
+		<div class="container">
+			<div class="section-head reveal">
+				<div class="section-head__main">
+					<span class="eyebrow">Süreç</span>
+					<h2 class="h2">Dört adımda<br /><span class="serif">atölyeden</span> size.</h2>
+				</div>
+				<div class="section-head__aside">
+					<p class="process__note">
+						Siparişinizin hangi aşamada olduğunu hesabınızdan takip edebilir,
+						dilerseniz atölyeyi ziyaret edip üretimi yerinde görebilirsiniz.
+					</p>
+				</div>
+			</div>
+
+			<ol class="process__list">
+				{steps.map((step, index) => (
+					<li class="process__item reveal" style={`--delay:${index * 0.08}s`}>
+						<span class="process__no">{step.no}</span>
+						<div class="process__body">
+							<h3>{step.title}</h3>
+							<p>{step.text}</p>
+						</div>
+						<span class="process__meta">
+							<Icon name="clock" size={12} />
+							{step.meta}
+						</span>
+					</li>
+				))}
+			</ol>
+		</div>
+	</section>
+
+	<!-- Materials -->
+	<section class="section theme-bone materials">
+		<div class="container materials__grid">
+			<div class="materials__media reveal">
+				<figure class="about-figure about-figure--light">
+					<img src="/images/tools.jpg" alt="Plaka üretiminde kullanılan el aletleri" loading="lazy" />
+					<figcaption>
+						<span class="micro">Malzeme</span>
+						<strong>Alüminyum · varak · baskı</strong>
+					</figcaption>
+				</figure>
+			</div>
+
+			<div class="materials__copy reveal" style="--delay:0.1s">
+				<span class="eyebrow">Malzeme</span>
+				<h2 class="about-title about-title--dark">
+					İyi malzeme,<br /><span class="serif">uzun hikâye.</span>
+				</h2>
+				<p class="materials__lead">
+					Bir plakanın yıllar sonra da aynı görünmesi tesadüf değil. Gövdeden baskıya
+					kadar her katmanı, dış mekân koşullarına göre seçiyoruz.
+				</p>
+
+				<dl class="materials__specs">
+					{materials.map((item) => (
+						<div>
+							<dt>{item.label}</dt>
+							<dd>{item.value}</dd>
+						</div>
+					))}
+				</dl>
+
+				<a class="link-arrow materials__link" href="/sss">
+					Malzeme sorularını okuyun
+					<Icon name="arrow-right" size={14} />
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- Values -->
+	<section class="section values">
+		<div class="container">
+			<div class="section-head reveal">
+				<div class="section-head__main">
+					<span class="eyebrow">Değerlerimiz</span>
+					<h2 class="h2">Neye <span class="serif">inanıyoruz.</span></h2>
+				</div>
+			</div>
+
+			<div class="values__grid">
+				{values.map((value, index) => (
+					<article class="value-card reveal" style={`--delay:${index * 0.08}s`}>
+						<span class="value-card__icon"><Icon name={value.icon} size={19} stroke={1.4} /></span>
+						<h3>{value.title}</h3>
+						<p>{value.text}</p>
+					</article>
+				))}
+			</div>
+
+			<div class="values__quote reveal">
+				<Icon name="quote" size={22} stroke={1.2} />
+				<blockquote>
+					“Bir plaka, aracın kimliğidir. Biz onu sadece okunur değil,
+					<span class="serif">hatırlanır</span> yapıyoruz.”
+				</blockquote>
+				<cite>
+					<span class="micro">Kurucu</span>
+					<strong>Plaka Atelier</strong>
+				</cite>
+			</div>
+		</div>
+	</section>
+
+	<!-- Visit -->
+	<section class="section section--tight visit">
+		<div class="container visit__inner reveal">
+			<div class="visit__plate plate-stage" data-tilt aria-hidden="true">
+				<Plate text="ARA 81" city="06" variant="black" size="standart" />
+			</div>
+			<div class="visit__copy">
+				<span class="eyebrow">Sipariş</span>
+				<h2 class="h2">Bir telefonla <span class="serif">başlayın.</span></h2>
+				<p>
+					Siparişlerimizi telefonla alıyoruz. Arayın; malzemeleri, yüzeyleri ve kendi
+					kombinasyonunuzu birlikte konuşalım. Plakanız nerede olursanız olun kapınıza gelsin.
+				</p>
+				<div class="visit__meta">
+					<span><Icon name="phone" size={14} /> {site.phone}</span>
+					<span><Icon name="clock" size={14} /> {site.hours}</span>
+				</div>
+				<div class="visit__actions">
+					<a class="btn btn--gold" href={telHref}>
+						<Icon name="phone" size={14} />
+						Hemen arayın
+					</a>
+					<a class="btn btn--outline" href="/plakalar">Koleksiyona göz at</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.about-hero__plate {
+		position: relative;
+		width: min(100%, 380px);
+		padding: 26px;
+		border: 1px solid var(--line);
+		border-radius: 16px;
+		background:
+			radial-gradient(120% 100% at 50% 0%, rgba(201, 168, 106, 0.12), transparent 60%),
+			linear-gradient(160deg, #12151b, #08090c 75%);
+	}
+
+	.about-hero__caption {
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		justify-content: center;
+		margin-top: 16px;
+		font-size: 8.5px;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--text-dim);
+	}
+
+	.about-hero__caption .icon {
+		color: var(--gold);
+	}
+
+	.about-title {
+		font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+		line-height: 1.02;
+		letter-spacing: -0.05em;
+		font-weight: 430;
+	}
+
+	.about-title :global(.serif) {
+		color: var(--gold-bright);
+	}
+
+	.about-title--dark :global(.serif) {
+		color: var(--gold-deep);
+	}
+
+	/* Story */
+	.about-story__grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: clamp(32px, 5vw, 76px);
+		align-items: center;
+	}
+
+	.about-story__media {
+		position: relative;
+	}
+
+	.about-figure {
+		position: relative;
+		margin: 0;
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		background: var(--surface);
+		box-shadow: 0 50px 90px -60px rgba(0, 0, 0, 0.9);
+	}
+
+	.about-figure img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 4.6;
+		object-fit: cover;
+		filter: saturate(0.62) contrast(1.08) brightness(0.78);
+		transition: transform 1.2s var(--ease);
+	}
+
+	.about-figure:hover img {
+		transform: scale(1.03);
+	}
+
+	.about-figure--light img {
+		filter: saturate(0.55) contrast(1.02) brightness(0.96) sepia(0.14);
+	}
+
+	.about-figure__veil {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(7, 8, 10, 0.88), transparent 55%);
+		pointer-events: none;
+	}
+
+	.about-figure--light .about-figure__veil {
+		background: linear-gradient(to top, rgba(241, 237, 228, 0.85), transparent 60%);
+	}
+
+	.about-figure figcaption {
+		position: absolute;
+		left: 20px;
+		right: 20px;
+		bottom: 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+	}
+
+	.about-figure figcaption strong {
+		font-family: var(--font-display);
+		font-size: 13px;
+		font-weight: 550;
+		letter-spacing: -0.02em;
+	}
+
+	.about-story__badge {
+		position: absolute;
+		right: -14px;
+		bottom: -14px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 16px 20px;
+		border: 1px solid rgba(201, 168, 106, 0.35);
+		border-radius: 12px;
+		background: linear-gradient(150deg, #1a1d24, #0a0b0e);
+		box-shadow: 0 24px 50px -26px rgba(0, 0, 0, 0.9);
+	}
+
+	.about-story__badge-value {
+		font-family: var(--font-display);
+		font-size: 34px;
+		font-weight: 500;
+		line-height: 1;
+		letter-spacing: -0.06em;
+		color: var(--gold-bright);
+	}
+
+	.about-story__badge-label {
+		font-size: 8.5px;
+		font-weight: 700;
+		line-height: 1.4;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--text-dim);
+	}
+
+	.about-story__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.about-story__copy p {
+		font-size: 13.5px;
+		line-height: 1.8;
+		color: var(--text-muted);
+	}
+
+	.about-stats {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1px;
+		margin-top: 14px;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: var(--line);
+		overflow: hidden;
+	}
+
+	.about-stat {
+		padding: 16px 18px;
+		background: var(--bg);
+	}
+
+	.about-stat dt {
+		display: flex;
+		align-items: baseline;
+		gap: 4px;
+	}
+
+	.about-stat__value {
+		font-family: var(--font-display);
+		font-size: 24px;
+		font-weight: 500;
+		line-height: 1;
+		letter-spacing: -0.05em;
+		color: var(--text);
+	}
+
+	.about-stat__suffix {
+		font-size: 10px;
+		font-weight: 650;
+		color: var(--gold);
+	}
+
+	.about-stat dd {
+		margin-top: 4px;
+		font-size: 9.5px;
+		letter-spacing: 0.04em;
+		color: var(--text-dim);
+	}
+
+	/* Process */
+	.process__note {
+		max-width: 30ch;
+		font-size: 12px;
+		line-height: 1.7;
+		color: var(--text-muted);
+	}
+
+	.process__list {
+		display: flex;
+		flex-direction: column;
+		border-top: 1px solid var(--line);
+	}
+
+	.process__item {
+		display: grid;
+		grid-template-columns: 90px minmax(0, 1fr) 140px;
+		gap: 28px;
+		align-items: start;
+		padding: 30px 0;
+		border-bottom: 1px solid var(--line);
+		transition: background 0.4s var(--ease-soft);
+	}
+
+	.process__item:hover {
+		background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent 70%);
+	}
+
+	.process__no {
+		font-family: var(--font-display);
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: var(--gold);
+		padding-top: 4px;
+	}
+
+	.process__body h3 {
+		font-family: var(--font-display);
+		font-size: clamp(1.2rem, 2vw, 1.55rem);
+		font-weight: 480;
+		letter-spacing: -0.045em;
+	}
+
+	.process__body p {
+		max-width: 62ch;
+		margin-top: 8px;
+		font-size: 12.5px;
+		line-height: 1.75;
+		color: var(--text-muted);
+	}
+
+	.process__meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		justify-self: end;
+		padding: 6px 11px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		font-size: 9px;
+		font-weight: 650;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--text-dim);
+		white-space: nowrap;
+	}
+
+	.process__meta .icon {
+		color: var(--gold);
+	}
+
+	/* Materials */
+	.materials__grid {
+		display: grid;
+		grid-template-columns: 0.9fr 1fr;
+		gap: clamp(32px, 5vw, 76px);
+		align-items: center;
+	}
+
+	.materials__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	.materials__lead {
+		font-size: 13.5px;
+		line-height: 1.8;
+		color: var(--text-muted);
+	}
+
+	.materials__specs {
+		display: flex;
+		flex-direction: column;
+		border-top: 1px solid var(--line-strong);
+	}
+
+	.materials__specs div {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 20px;
+		padding: 11px 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.materials__specs dt {
+		font-size: 9px;
+		font-weight: 750;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--text-dim);
+	}
+
+	.materials__specs dd {
+		font-size: 12px;
+		font-weight: 550;
+		text-align: right;
+		color: var(--text);
+	}
+
+	.materials__link {
+		align-self: flex-start;
+		margin-top: 4px;
+	}
+
+	/* Values */
+	.values__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 14px;
+	}
+
+	.value-card {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 26px;
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		background:
+			linear-gradient(160deg, rgba(255, 255, 255, 0.03), transparent 55%),
+			var(--surface);
+		transition:
+			border-color 0.4s,
+			transform 0.5s var(--ease);
+	}
+
+	.value-card:hover {
+		border-color: rgba(201, 168, 106, 0.3);
+		transform: translateY(-3px);
+	}
+
+	.value-card__icon {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border: 1px solid rgba(201, 168, 106, 0.26);
+		border-radius: 50%;
+		background: rgba(201, 168, 106, 0.06);
+		color: var(--gold);
+	}
+
+	.value-card h3 {
+		font-family: var(--font-display);
+		font-size: 16px;
+		font-weight: 500;
+		letter-spacing: -0.035em;
+	}
+
+	.value-card p {
+		font-size: 12px;
+		line-height: 1.75;
+		color: var(--text-muted);
+	}
+
+	.values__quote {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
+		max-width: 800px;
+		margin: clamp(50px, 6vw, 84px) auto 0;
+		text-align: center;
+	}
+
+	.values__quote .icon {
+		color: var(--gold);
+	}
+
+	.values__quote blockquote {
+		font-family: var(--font-display);
+		font-size: clamp(1.3rem, 2.6vw, 2.1rem);
+		font-weight: 400;
+		line-height: 1.35;
+		letter-spacing: -0.04em;
+		color: var(--text);
+	}
+
+	.values__quote blockquote :global(.serif) {
+		color: var(--gold-bright);
+	}
+
+	.values__quote cite {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		font-style: normal;
+	}
+
+	.values__quote cite strong {
+		font-size: 11px;
+		font-weight: 650;
+		color: var(--text-muted);
+	}
+
+	/* Visit */
+	.visit__inner {
+		display: grid;
+		grid-template-columns: 0.8fr 1fr;
+		gap: clamp(30px, 5vw, 70px);
+		align-items: center;
+		padding: clamp(28px, 4vw, 52px);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-lg);
+		background:
+			radial-gradient(110% 100% at 0% 0%, rgba(201, 168, 106, 0.1), transparent 58%),
+			linear-gradient(160deg, #121519, #08090c 72%);
+	}
+
+	.visit__plate {
+		padding: 22px;
+		border: 1px solid var(--line);
+		border-radius: 14px;
+		background: rgba(0, 0, 0, 0.24);
+	}
+
+	.visit__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.visit__copy p {
+		max-width: 46ch;
+		font-size: 13px;
+		line-height: 1.75;
+		color: var(--text-muted);
+	}
+
+	.visit__meta {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		font-size: 11px;
+		color: var(--text-dim);
+	}
+
+	.visit__meta span {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.visit__meta .icon {
+		color: var(--gold);
+	}
+
+	.visit__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 4px;
+	}
+
+	@media (max-width: 980px) {
+		.about-story__grid,
+		.materials__grid,
+		.visit__inner {
+			grid-template-columns: 1fr;
+		}
+		.about-story__media {
+			max-width: 520px;
+		}
+		.about-figure img {
+			aspect-ratio: 4 / 3.4;
+		}
+		.values__grid {
+			grid-template-columns: 1fr;
+		}
+		.process__item {
+			grid-template-columns: 54px minmax(0, 1fr);
+			gap: 18px;
+		}
+		.process__meta {
+			grid-column: 2;
+			justify-self: start;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.about-stats {
+			grid-template-columns: 1fr;
+		}
+		.about-story__badge {
+			right: 10px;
+			bottom: 10px;
+			padding: 12px 16px;
+		}
+		.materials__specs div {
+			flex-direction: column;
+			gap: 3px;
+		}
+		.materials__specs dd {
+			text-align: left;
+		}
+		.visit__actions .btn {
+			width: 100%;
+		}
+	}
+</style>

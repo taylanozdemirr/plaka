@@ -1,0 +1,215 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Plate from '../components/Plate.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout
+	title="Sayfa Bulunamadı"
+	description="Aradığınız sayfa taşınmış veya hiç var olmamış olabilir. Plaka Atelier koleksiyonuna göz atın."
+>
+	<section class="not-found">
+		<div class="container not-found__inner">
+			<div class="not-found__copy reveal">
+				<span class="eyebrow">Hata 404</span>
+				<p class="not-found__code serif">404</p>
+				<h1 class="not-found__title">
+					Bu plaka <span class="serif">kayıtlı değil.</span>
+				</h1>
+				<p class="not-found__lead">
+					Aradığınız sayfa taşınmış, adresi değişmiş ya da hiç var olmamış olabilir.
+					Koleksiyona dönebilir veya aradığınızı aşağıdaki bağlantılarda bulabilirsiniz.
+				</p>
+				<div class="not-found__actions">
+					<a class="btn btn--gold" href="/plakalar">
+						Koleksiyona dön
+						<Icon name="arrow-right" size={14} />
+					</a>
+					<a class="btn btn--outline" href="/">
+						<Icon name="home" size={14} />
+						Ana sayfa
+					</a>
+				</div>
+				<div class="not-found__links">
+					<a href="/plakalar?kategori=app">App plakalar</a>
+					<a href="/hakkimizda">Atölye</a>
+					<a href="/sss">SSS</a>
+					<a href="/iletisim">İletişim</a>
+				</div>
+			</div>
+
+			<div class="not-found__stage reveal" style="--delay:0.1s">
+				<span class="not-found__grid" aria-hidden="true"></span>
+				<span class="not-found__glow" aria-hidden="true"></span>
+				<div class="not-found__plate plate-stage" data-tilt aria-hidden="true">
+					<Plate text="404 404" city="00" variant="bone" size="standart" />
+				</div>
+				<span class="not-found__stamp">
+					<Icon name="info" size={12} />
+					Kayıt bulunamadı
+				</span>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.not-found {
+		position: relative;
+		padding: clamp(40px, 6vw, 90px) 0 clamp(70px, 9vw, 130px);
+		overflow: hidden;
+	}
+
+	.not-found::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(60% 55% at 78% 32%, rgba(201, 168, 106, 0.1), transparent 62%),
+			radial-gradient(45% 45% at 12% 84%, rgba(28, 63, 148, 0.16), transparent 68%);
+		pointer-events: none;
+	}
+
+	.not-found__inner {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1.05fr 0.95fr;
+		gap: clamp(34px, 6vw, 90px);
+		align-items: center;
+	}
+
+	.not-found__copy {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.not-found__code {
+		font-size: clamp(3.4rem, 7vw, 6rem);
+		line-height: 0.8;
+		color: var(--gold);
+		opacity: 0.5;
+	}
+
+	.not-found__title {
+		font-size: clamp(2.2rem, 4.6vw, 4rem);
+		line-height: 0.98;
+		letter-spacing: -0.058em;
+		font-weight: 430;
+	}
+
+	.not-found__title :global(.serif) {
+		color: var(--gold-bright);
+	}
+
+	.not-found__lead {
+		max-width: 48ch;
+		font-size: 13px;
+		line-height: 1.8;
+		color: var(--text-muted);
+	}
+
+	.not-found__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 4px;
+	}
+
+	.not-found__links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 18px;
+		padding-top: 20px;
+		margin-top: 8px;
+		border-top: 1px solid var(--line);
+	}
+
+	.not-found__links a {
+		font-size: 9.5px;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--text-dim);
+		transition: color 0.25s;
+	}
+
+	.not-found__links a:hover {
+		color: var(--gold-bright);
+	}
+
+	.not-found__stage {
+		position: relative;
+		display: grid;
+		place-items: center;
+		padding: clamp(28px, 4vw, 52px);
+		border: 1px solid var(--line);
+		border-radius: var(--radius-lg);
+		background:
+			radial-gradient(110% 90% at 50% 0%, rgba(201, 168, 106, 0.12), transparent 58%),
+			linear-gradient(160deg, #111419, #08090c 72%);
+		overflow: hidden;
+	}
+
+	.not-found__grid {
+		position: absolute;
+		inset: 0;
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+		background-size: 40px 40px;
+		mask-image: radial-gradient(75% 70% at 50% 40%, #000, transparent 80%);
+		-webkit-mask-image: radial-gradient(75% 70% at 50% 40%, #000, transparent 80%);
+	}
+
+	.not-found__glow {
+		position: absolute;
+		top: 34%;
+		left: 50%;
+		width: 70%;
+		height: 40%;
+		transform: translate(-50%, -50%);
+		border-radius: 50%;
+		background: rgba(201, 168, 106, 0.18);
+		filter: blur(52px);
+	}
+
+	.not-found__plate {
+		position: relative;
+		z-index: 2;
+		width: 100%;
+	}
+
+	.not-found__stamp {
+		position: relative;
+		z-index: 2;
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		padding: 7px 12px;
+		margin-top: 22px;
+		border: 1px solid rgba(190, 93, 85, 0.36);
+		border-radius: 999px;
+		background: rgba(190, 93, 85, 0.08);
+		font-size: 8.5px;
+		font-weight: 750;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: #e59a92;
+	}
+
+	@media (max-width: 900px) {
+		.not-found__inner {
+			grid-template-columns: 1fr;
+		}
+		.not-found__stage {
+			order: -1;
+		}
+	}
+
+	@media (max-width: 560px) {
+		.not-found__actions .btn {
+			flex: 1 1 100%;
+		}
+	}
+</style>

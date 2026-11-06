@@ -1,0 +1,312 @@
+---
+import Plate from './Plate.astro';
+import Icon from './Icon.astro';
+import { categoryLabels, type Product } from '../data/products';
+import { formatPrice } from '../lib/format';
+import { telHref } from '../data/site';
+
+interface Props {
+	product: Product;
+	index?: number;
+}
+
+const { product, index = 0 } = Astro.props;
+
+---
+
+<article
+	class="product-card reveal"
+	style={`--delay:${Math.min(index * 0.06, 0.3)}s`}
+	data-category={product.category}
+>
+	<div class="product-card__stage">
+		<span class="product-card__grid" aria-hidden="true"></span>
+		<span class="product-card__glow" aria-hidden="true"></span>
+		<div class="product-card__plate plate-stage" aria-hidden="true">
+			<Plate
+				text={product.text}
+				city={product.city}
+				variant={product.variant}
+				size={product.size}
+			/>
+		</div>
+
+		<div class="product-card__badges" aria-hidden="true">
+			{product.badge && <span class="badge">{product.badge}</span>}
+		</div>
+
+		<a
+			class="product-card__link"
+			href={`/plakalar/${product.slug}`}
+			aria-label={`${product.name} ürününü incele`}
+		>
+			<span class="product-card__view">
+				İncele
+				<Icon name="arrow-up-right" size={13} stroke={1.7} />
+			</span>
+		</a>
+	</div>
+
+	<div class="product-card__body">
+		<div class="product-card__top">
+			<div class="product-card__title-wrap">
+				<span class="micro">{categoryLabels[product.category]}</span>
+				<h3 class="product-card__title">
+					<a href={`/plakalar/${product.slug}`}>{product.name}</a>
+				</h3>
+			</div>
+			<div class="product-card__price">
+				<span class="price">{formatPrice(product.price)}</span>
+			</div>
+		</div>
+
+		<p class="product-card__tagline">{product.tagline}</p>
+
+		<div class="product-card__foot">
+			<span class="product-card__finish">{product.finish}</span>
+
+			<a
+				class="product-card__add"
+				href={telHref}
+				aria-label={`${product.name} siparişi için telefonla arayın`}
+			>
+				<Icon name="phone" size={13} stroke={1.8} />
+				<span>Sipariş İçin Ara</span>
+			</a>
+		</div>
+	</div>
+</article>
+
+<style>
+	.product-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		border: 1px solid var(--line);
+		border-radius: 18px;
+		background:
+			linear-gradient(160deg, rgba(255, 255, 255, 0.035), transparent 48%),
+			var(--surface);
+		overflow: hidden;
+		transition:
+			transform 0.55s var(--ease),
+			border-color 0.45s var(--ease-soft),
+			box-shadow 0.55s var(--ease-soft);
+	}
+
+	.product-card:hover {
+		transform: translateY(-5px);
+		border-color: rgba(201, 168, 106, 0.26);
+		box-shadow: 0 40px 80px -46px rgba(0, 0, 0, 0.9);
+	}
+
+	.product-card__stage {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 1.22;
+		padding: clamp(26px, 3.4vw, 46px);
+		background:
+			radial-gradient(120% 95% at 50% 6%, rgba(201, 168, 106, 0.1), transparent 52%),
+			radial-gradient(90% 80% at 80% 100%, rgba(35, 59, 112, 0.18), transparent 55%),
+			linear-gradient(160deg, #12151b, #090a0d 70%);
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.product-card__grid {
+		position: absolute;
+		inset: 0;
+		opacity: 0.35;
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+		background-size: 42px 42px;
+		mask-image: radial-gradient(80% 70% at 50% 40%, #000, transparent 72%);
+		-webkit-mask-image: radial-gradient(80% 70% at 50% 40%, #000, transparent 72%);
+		pointer-events: none;
+	}
+
+	.product-card__glow {
+		position: absolute;
+		width: 70%;
+		height: 70%;
+		border-radius: 50%;
+		background: rgba(201, 168, 106, 0.14);
+		filter: blur(54px);
+		opacity: 0;
+		transition: opacity 0.6s var(--ease-soft);
+		pointer-events: none;
+	}
+
+	.product-card:hover .product-card__glow {
+		opacity: 1;
+	}
+
+	.product-card__plate {
+		position: relative;
+		z-index: 2;
+		width: 86%;
+		transform: translateY(0) scale(1);
+		transition: transform 0.7s var(--ease);
+	}
+
+	.product-card:hover .product-card__plate {
+		transform: translateY(-5px) scale(1.025);
+	}
+
+	.product-card__badges {
+		position: absolute;
+		z-index: 3;
+		top: 14px;
+		left: 14px;
+		display: flex;
+		gap: 6px;
+		flex-wrap: wrap;
+	}
+
+	.product-card__link {
+		position: absolute;
+		inset: 0;
+		z-index: 4;
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-end;
+		padding: 14px;
+		border-radius: inherit;
+	}
+
+	.product-card__view {
+		display: inline-flex;
+		align-items: center;
+		gap: 7px;
+		padding: 8px 12px;
+		border: 1px solid var(--line-strong);
+		border-radius: 999px;
+		background: rgba(7, 8, 10, 0.6);
+		backdrop-filter: blur(12px);
+		font-size: 9.5px;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+		opacity: 0;
+		transform: translateY(6px);
+		transition:
+			opacity 0.35s var(--ease-soft),
+			transform 0.4s var(--ease),
+			color 0.3s;
+	}
+
+	.product-card:hover .product-card__view,
+	.product-card__link:focus-visible .product-card__view {
+		opacity: 1;
+		transform: none;
+		color: var(--text);
+	}
+
+	.product-card__body {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 19px 20px 20px;
+	}
+
+	.product-card__top {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 16px;
+	}
+
+	.product-card__title-wrap {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		min-width: 0;
+	}
+
+	.product-card__title {
+		font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+		font-weight: 500;
+		letter-spacing: -0.03em;
+		line-height: 1.15;
+	}
+
+	.product-card__title a {
+		transition: color 0.25s;
+	}
+
+	.product-card__title a:hover {
+		color: var(--gold-bright);
+	}
+
+	.product-card__price {
+		display: flex;
+		align-items: baseline;
+		white-space: nowrap;
+		font-size: 0.95rem;
+	}
+
+	.product-card__tagline {
+		font-size: 11.5px;
+		line-height: 1.55;
+		color: var(--text-dim);
+	}
+
+	.product-card__foot {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 14px;
+		padding-top: 12px;
+		margin-top: 2px;
+		border-top: 1px solid var(--line);
+	}
+
+	.product-card__finish {
+		font-size: 10.5px;
+		letter-spacing: 0.04em;
+		color: var(--text-dim);
+	}
+
+	.product-card__add {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 12px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		color: var(--text-muted);
+		font-size: 9.5px;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		transition:
+			color 0.3s,
+			border-color 0.3s,
+			background 0.3s,
+			transform 0.3s var(--ease);
+	}
+
+	.product-card__add:hover {
+		color: #17120a;
+		border-color: var(--gold);
+		background: var(--gold);
+		transform: translateY(-1px);
+	}
+
+	@media (max-width: 520px) {
+		.product-card__view {
+			display: none;
+		}
+		.product-card__add span {
+			display: none;
+		}
+		.product-card__add {
+			padding: 9px;
+		}
+	}
+</style>
